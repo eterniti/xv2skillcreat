@@ -1784,6 +1784,29 @@
        <string>Enable IDB</string>
       </property>
      </widget>
+     <widget class="QLineEdit" name="idbNU0CEdit">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>228</y>
+        <width>75</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_106">
+      <property name="geometry">
+       <rect>
+        <x>474</x>
+        <y>230</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NU_0C:</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="pupTab">
      <property name="autoFillBackground">

@@ -137,15 +137,19 @@ public:
     QLineEdit *fDCEdit;
     QLabel *label_25;
     QLineEdit *fB4Edit;
+    QLineEdit *nu48Edit;
+    QLabel *label_57;
+    QLineEdit *nu4CEdit;
+    QLabel *label_58;
 
     void setupUi(QDialog *IdbEffectDialog)
     {
         if (IdbEffectDialog->objectName().isEmpty())
             IdbEffectDialog->setObjectName(QStringLiteral("IdbEffectDialog"));
-        IdbEffectDialog->resize(751, 650);
+        IdbEffectDialog->resize(751, 680);
         buttonBox = new QDialogButtonBox(IdbEffectDialog);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
-        buttonBox->setGeometry(QRect(5, 605, 745, 23));
+        buttonBox->setGeometry(QRect(5, 635, 745, 23));
         buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
         buttonBox->setCenterButtons(true);
         label = new QLabel(IdbEffectDialog);
@@ -484,6 +488,18 @@ public:
         fB4Edit = new QLineEdit(IdbEffectDialog);
         fB4Edit->setObjectName(QStringLiteral("fB4Edit"));
         fB4Edit->setGeometry(QRect(610, 258, 100, 20));
+        nu48Edit = new QLineEdit(IdbEffectDialog);
+        nu48Edit->setObjectName(QStringLiteral("nu48Edit"));
+        nu48Edit->setGeometry(QRect(370, 558, 100, 20));
+        label_57 = new QLabel(IdbEffectDialog);
+        label_57->setObjectName(QStringLiteral("label_57"));
+        label_57->setGeometry(QRect(323, 560, 47, 13));
+        nu4CEdit = new QLineEdit(IdbEffectDialog);
+        nu4CEdit->setObjectName(QStringLiteral("nu4CEdit"));
+        nu4CEdit->setGeometry(QRect(130, 588, 100, 20));
+        label_58 = new QLabel(IdbEffectDialog);
+        label_58->setObjectName(QStringLiteral("label_58"));
+        label_58->setGeometry(QRect(82, 590, 47, 13));
 
         retranslateUi(IdbEffectDialog);
 
@@ -549,6 +565,8 @@ public:
         label_55->setText(QApplication::translate("IdbEffectDialog", "F_DC:", 0));
         label_56->setText(QApplication::translate("IdbEffectDialog", "F_CC:", 0));
         label_25->setText(QApplication::translate("IdbEffectDialog", "F_B4:", 0));
+        label_57->setText(QApplication::translate("IdbEffectDialog", "NU_48:", 0));
+        label_58->setText(QApplication::translate("IdbEffectDialog", "NU_4C:", 0));
     } // retranslateUi
 
 };

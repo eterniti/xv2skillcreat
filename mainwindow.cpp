@@ -23,7 +23,7 @@
 
 #define BODY_ID_TEXT    "Id to use in BAC: "
 
-#define BEHAVIOUR_MAX	26
+#define BEHAVIOUR_MAX	27
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -79,6 +79,7 @@ bool MainWindow::Initialize()
     ui->idbU24Edit->setValidator(new QIntValidator(this));
     ui->idbU28Edit->setValidator(new QIntValidator(this));
     ui->idbU2CEdit->setValidator(new QIntValidator(this));
+    ui->idbNU0CEdit->setValidator(new QIntValidator(this));
     ui->idbCopyButton->addAction(ui->actionFromGameIdb);
     // Pup tab
     ui->pupU04Edit->setValidator(new QIntValidator(this));
@@ -1877,6 +1878,7 @@ void MainWindow::IdbEntryToGui(const IdbEntry &entry)
     ui->idbU24Edit->setText(QString("%1").arg((int32_t)entry.unk_24[0]));
     ui->idbU28Edit->setText(QString("%1").arg((int32_t)entry.unk_24[1]));
     ui->idbU2CEdit->setText(QString("%1").arg((int32_t)entry.unk_24[2]));
+    ui->idbNU0CEdit->setText(QString("%1").arg((int32_t)entry.new_unk_0C));
 
     ui->idbHumCheck->setChecked(entry.racelock & IDB_RACE_HUM);
     ui->idbHufCheck->setChecked(entry.racelock & IDB_RACE_HUF);
@@ -1901,6 +1903,7 @@ void MainWindow::GuiToIdbEntry(IdbEntry &entry)
     entry.unk_24[0] = (uint32_t) ui->idbU24Edit->text().toInt();
     entry.unk_24[1] = (uint32_t) ui->idbU28Edit->text().toInt();
     entry.unk_24[2] = (uint32_t) ui->idbU2CEdit->text().toInt();
+    entry.new_unk_0C = (uint32_t) ui->idbNU0CEdit->text().toInt();
 
     entry.racelock = 0;
 
@@ -1966,6 +1969,7 @@ void MainWindow::on_idbEnableCheck_clicked()
     ui->idbEff1Button->setEnabled(checked);
     ui->idbEff2Button->setEnabled(checked);
     ui->idbEff3Button->setEnabled(checked);
+    ui->idbNU0CEdit->setEnabled(checked);
 
     IdbEntry &entry = x2m->GetSkillIdbEntry();
 

@@ -192,6 +192,8 @@ public:
     QLabel *label_44;
     QLabel *label_45;
     QCheckBox *idbEnableCheck;
+    QLineEdit *idbNU0CEdit;
+    QLabel *label_106;
     QWidget *pupTab;
     QCheckBox *pupEnableCheck;
     QToolButton *pupCopyButton;
@@ -804,6 +806,12 @@ public:
         idbEnableCheck = new QCheckBox(idbTab);
         idbEnableCheck->setObjectName(QStringLiteral("idbEnableCheck"));
         idbEnableCheck->setGeometry(QRect(20, 23, 81, 17));
+        idbNU0CEdit = new QLineEdit(idbTab);
+        idbNU0CEdit->setObjectName(QStringLiteral("idbNU0CEdit"));
+        idbNU0CEdit->setGeometry(QRect(520, 228, 75, 20));
+        label_106 = new QLabel(idbTab);
+        label_106->setObjectName(QStringLiteral("label_106"));
+        label_106->setGeometry(QRect(474, 230, 47, 13));
         tabWidget->addTab(idbTab, QString());
         pupTab = new QWidget();
         pupTab->setObjectName(QStringLiteral("pupTab"));
@@ -1490,6 +1498,7 @@ public:
         label_44->setText(QApplication::translate("MainWindow", "Effect 2:", 0));
         label_45->setText(QApplication::translate("MainWindow", "Effect 3:", 0));
         idbEnableCheck->setText(QApplication::translate("MainWindow", "Enable IDB", 0));
+        label_106->setText(QApplication::translate("MainWindow", "NU_0C:", 0));
         tabWidget->setTabText(tabWidget->indexOf(idbTab), QApplication::translate("MainWindow", "IDB", 0));
         pupEnableCheck->setText(QApplication::translate("MainWindow", "Enable PUP", 0));
         pupCopyButton->setText(QApplication::translate("MainWindow", "Copy", 0));
