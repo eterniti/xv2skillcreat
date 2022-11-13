@@ -152,6 +152,8 @@ public:
     QPushButton *cusAcbSeButton;
     QPushButton *cusAcbVoxButton;
     QPushButton *cusModelButton;
+    QLineEdit *cusU44Edit;
+    QLabel *label_107;
     QWidget *idbTab;
     QLabel *label_20;
     QCheckBox *idbHumCheck;
@@ -683,6 +685,12 @@ public:
         cusModelButton->setObjectName(QStringLiteral("cusModelButton"));
         cusModelButton->setGeometry(QRect(338, 380, 75, 23));
         cusModelButton->setFlat(true);
+        cusU44Edit = new QLineEdit(cusTab);
+        cusU44Edit->setObjectName(QStringLiteral("cusU44Edit"));
+        cusU44Edit->setGeometry(QRect(75, 501, 75, 20));
+        label_107 = new QLabel(cusTab);
+        label_107->setObjectName(QStringLiteral("label_107"));
+        label_107->setGeometry(QRect(30, 503, 47, 13));
         tabWidget->addTab(cusTab, QString());
         idbTab = new QWidget();
         idbTab->setObjectName(QStringLiteral("idbTab"));
@@ -1469,6 +1477,7 @@ public:
         cusAcbSeButton->setText(QApplication::translate("MainWindow", "acb (SE):", 0));
         cusAcbVoxButton->setText(QApplication::translate("MainWindow", "acb (VOX):", 0));
         cusModelButton->setText(QApplication::translate("MainWindow", "Model:", 0));
+        label_107->setText(QApplication::translate("MainWindow", "U_44:", 0));
         tabWidget->setTabText(tabWidget->indexOf(cusTab), QApplication::translate("MainWindow", "CUS", 0));
         label_20->setText(QApplication::translate("MainWindow", "Stars:", 0));
         idbHumCheck->setText(QApplication::translate("MainWindow", "HUM", 0));

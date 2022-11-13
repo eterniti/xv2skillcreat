@@ -1296,6 +1296,29 @@
        <bool>true</bool>
       </property>
      </widget>
+     <widget class="QLineEdit" name="cusU44Edit">
+      <property name="geometry">
+       <rect>
+        <x>75</x>
+        <y>501</y>
+        <width>75</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_107">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>503</y>
+        <width>47</width>
+        <height>13</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>U_44:</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="idbTab">
      <property name="autoFillBackground">

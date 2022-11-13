@@ -62,6 +62,7 @@ bool MainWindow::Initialize()
     ui->cusModelEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusChangeSSEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusNumTransEdit->setValidator(new QIntValidator(-32768, 32767, this));
+    ui->cusU44Edit->setValidator(new QIntValidator(this));
     ui->cusCopyButton->addAction(ui->actionFromGameCus);
     ui->cusCopyButton->addAction(ui->actionFromExternalCus);
     ui->cusAcbVoxButton->setStyleSheet("font-weight: bold;");
@@ -1571,6 +1572,7 @@ void MainWindow::SkillToGui(const CusSkill &skill)
     ui->cusModelEdit->setText(QString("%1").arg((int16_t)skill.model));
     ui->cusChangeSSEdit->setText(QString("%1").arg((int16_t)skill.change_skillset));
     ui->cusNumTransEdit->setText(QString("%1").arg((int16_t)skill.num_transforms));
+    ui->cusU44Edit->setText(QString("%1").arg((int32_t)skill.unk_44));
 
     ui->cusEanEdit->setText(Utils::StdStringToQString(skill.paths[0], false));
     ui->cusCamEanEdit->setText(Utils::StdStringToQString(skill.paths[1], false));
@@ -1627,6 +1629,7 @@ void MainWindow::GuiToSkill(CusSkill &skill)
     skill.model = (uint16_t) ui->cusModelEdit->text().toInt();
     skill.change_skillset = (uint16_t) ui->cusChangeSSEdit->text().toInt();
     skill.num_transforms = (uint16_t) ui->cusNumTransEdit->text().toInt();
+    skill.unk_44 = (uint32_t) ui->cusNumTransEdit->text().toInt();
 
     skill.paths[0] = Utils::QStringToStdString(ui->cusEanEdit->text(), false);
     skill.paths[1] = Utils::QStringToStdString(ui->cusCamEanEdit->text(), false);
