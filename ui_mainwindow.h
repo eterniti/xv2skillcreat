@@ -637,7 +637,7 @@ public:
         cusU34Edit->setGeometry(QRect(405, 221, 75, 20));
         label_26 = new QLabel(cusTab);
         label_26->setObjectName(QStringLiteral("label_26"));
-        label_26->setGeometry(QRect(338, 263, 61, 16));
+        label_26->setGeometry(QRect(342, 263, 61, 16));
         cusU36Edit = new QLineEdit(cusTab);
         cusU36Edit->setObjectName(QStringLiteral("cusU36Edit"));
         cusU36Edit->setGeometry(QRect(405, 261, 75, 20));
@@ -837,10 +837,10 @@ public:
         label_46->setGeometry(QRect(89, 70, 47, 13));
         label_47 = new QLabel(pupTab);
         label_47->setObjectName(QStringLiteral("label_47"));
-        label_47->setGeometry(QRect(89, 100, 47, 13));
+        label_47->setGeometry(QRect(50, 100, 81, 16));
         label_48 = new QLabel(pupTab);
         label_48->setObjectName(QStringLiteral("label_48"));
-        label_48->setGeometry(QRect(88, 130, 47, 13));
+        label_48->setGeometry(QRect(50, 130, 81, 16));
         label_49 = new QLabel(pupTab);
         label_49->setObjectName(QStringLiteral("label_49"));
         label_49->setGeometry(QRect(94, 160, 47, 13));
@@ -1262,7 +1262,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 661, 21));
+        menuBar->setGeometry(QRect(0, 0, 661, 22));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuHelp = new QMenu(menuBar);
@@ -1468,7 +1468,7 @@ public:
         label_23->setText(QApplication::translate("MainWindow", "U_30:", 0));
         label_24->setText(QApplication::translate("MainWindow", "U_32 / 11?:", 0));
         label_25->setText(QApplication::translate("MainWindow", "U_34 / 12?:", 0));
-        label_26->setText(QApplication::translate("MainWindow", "U_36 / 13?:", 0));
+        label_26->setText(QApplication::translate("MainWindow", "Skill type:", 0));
         label_27->setText(QApplication::translate("MainWindow", "PUP:", 0));
         label_28->setText(QApplication::translate("MainWindow", "Aura / trans control:", 0));
         label_30->setText(QApplication::translate("MainWindow", "Change skillset:", 0));
@@ -1512,8 +1512,8 @@ public:
         pupEnableCheck->setText(QApplication::translate("MainWindow", "Enable PUP", 0));
         pupCopyButton->setText(QApplication::translate("MainWindow", "Copy", 0));
         label_46->setText(QApplication::translate("MainWindow", "U_04:", 0));
-        label_47->setText(QApplication::translate("MainWindow", "U_08:", 0));
-        label_48->setText(QApplication::translate("MainWindow", "U_0C:", 0));
+        label_47->setText(QApplication::translate("MainWindow", "Super Soul 1:", 0));
+        label_48->setText(QApplication::translate("MainWindow", "Super Soul 2:", 0));
         label_49->setText(QApplication::translate("MainWindow", "HEA:", 0));
         label_50->setText(QApplication::translate("MainWindow", "F_14:", 0));
         label_51->setText(QApplication::translate("MainWindow", "KI:", 0));

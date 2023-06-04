@@ -23,7 +23,7 @@
 
 #define BODY_ID_TEXT    "Id to use in BAC: "
 
-#define BEHAVIOUR_MAX	27
+#define BEHAVIOUR_MAX	29
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -1561,7 +1561,7 @@ void MainWindow::SkillToGui(const CusSkill &skill)
     ui->cusU30Edit->setText(QString("%1").arg((int16_t)skill.unk_30));
     ui->cusU32Edit->setText(QString("%1").arg((int16_t)skill.unk_32));
     ui->cusU34Edit->setText(QString("%1").arg((int16_t)skill.unk_34));
-    ui->cusU36Edit->setText(QString("%1").arg((int16_t)skill.unk_36));
+    ui->cusU36Edit->setText(QString("%1").arg((int16_t)skill.skill_type));
 
     if (ui->pupEnableCheck->isChecked())
         ui->cusPupEdit->setText(QString("%1").arg(-1));
@@ -1623,7 +1623,7 @@ void MainWindow::GuiToSkill(CusSkill &skill)
     skill.unk_30 = (uint16_t) ui->cusU30Edit->text().toInt();
     skill.unk_32 = (uint16_t) ui->cusU32Edit->text().toInt();
     skill.unk_34 = (uint16_t) ui->cusU34Edit->text().toInt();
-    skill.unk_36 = (uint16_t) ui->cusU36Edit->text().toInt();
+    skill.skill_type = (uint16_t) ui->cusU36Edit->text().toInt();
     skill.pup_id = (uint16_t) ui->cusPupEdit->text().toInt();
     skill.aura = (uint16_t) ui->cusAuraEdit->text().toInt();
     skill.model = (uint16_t) ui->cusModelEdit->text().toInt();
@@ -1871,8 +1871,8 @@ void MainWindow::on_cusModelEdit_textChanged(const QString &arg1)
 void MainWindow::IdbEntryToGui(const IdbEntry &entry)
 {
     ui->idbStarsEdit->setText(QString("%1").arg((int16_t)entry.stars));
-    ui->idbU0AEdit->setText(QString("%1").arg((int16_t)entry.unk_0A));
-    ui->idbU0CEdit->setText(QString("%1").arg((int16_t)entry.unk_0C));
+    ui->idbU0AEdit->setText(QString("%1").arg((int16_t)entry.dlc_flag));
+    ui->idbU0CEdit->setText(QString("%1").arg((int16_t)entry.availability));
     ui->idbU0EEdit->setText(QString("%1").arg((int16_t)entry.unk_0E));
     ui->idbBuyEdit->setText(QString("%1").arg((int32_t)entry.buy));
     ui->idbSellEdit->setText(QString("%1").arg((int32_t)entry.sell));
@@ -1896,8 +1896,8 @@ void MainWindow::IdbEntryToGui(const IdbEntry &entry)
 void MainWindow::GuiToIdbEntry(IdbEntry &entry)
 {
     entry.stars = (uint16_t) ui->idbStarsEdit->text().toInt();
-    entry.unk_0A = (uint16_t) ui->idbU0AEdit->text().toInt();
-    entry.unk_0C = (uint16_t) ui->idbU0CEdit->text().toInt();
+    entry.dlc_flag = (uint16_t) ui->idbU0AEdit->text().toInt();
+    entry.availability = (uint16_t) ui->idbU0CEdit->text().toInt();
     entry.unk_0E = (uint16_t) ui->idbU0EEdit->text().toInt();
     entry.buy = (uint32_t) ui->idbBuyEdit->text().toInt();
     entry.sell = (uint32_t) ui->idbSellEdit->text().toInt();
@@ -2023,8 +2023,8 @@ void MainWindow::on_idbCopyButton_triggered(QAction *arg1)
 void MainWindow::PupEntryToGui(const PupEntry &entry)
 {
     ui->pupU04Edit->setText(QString("%1").arg((int32_t)entry.unk_04));
-    ui->pupU08Edit->setText(QString("%1").arg((int32_t)entry.unk_08));
-    ui->pupU0CEdit->setText(QString("%1").arg((int32_t)entry.unk_0C));
+    ui->pupU08Edit->setText(QString("%1").arg((int32_t)entry.super_soul1));
+    ui->pupU0CEdit->setText(QString("%1").arg((int32_t)entry.super_soul2));
     ui->pupHeaEdit->setText(QString("%1").arg(entry.hea));
     ui->pupF14Edit->setText(QString("%1").arg(entry.unk_14));
     ui->pupKiEdit->setText(QString("%1").arg(entry.ki));
@@ -2066,8 +2066,8 @@ void MainWindow::PupEntryToGui(const PupEntry &entry)
 void MainWindow::GuiToPupEntry(PupEntry &entry)
 {
     entry.unk_04 = (uint32_t) ui->pupU04Edit->text().toInt();
-    entry.unk_08 = (uint32_t) ui->pupU08Edit->text().toInt();
-    entry.unk_0C = (uint32_t) ui->pupU0CEdit->text().toInt();
+    entry.super_soul1 = (uint32_t) ui->pupU08Edit->text().toInt();
+    entry.super_soul2 = (uint32_t) ui->pupU0CEdit->text().toInt();
     entry.hea = ui->pupHeaEdit->text().toFloat();
     entry.unk_14 = ui->pupF14Edit->text().toFloat();
     entry.ki = ui->pupKiEdit->text().toFloat();
