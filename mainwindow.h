@@ -130,6 +130,16 @@ private slots:
 
     void on_guidCopyButton_clicked();
 
+    void on_auraAddMoreColorButton_triggered(QAction *arg1);
+
+    void on_aurBpeButton_triggered(QAction *arg1);
+
+    void on_skillHowLangComboBox_currentIndexChanged(int index);
+
+    void on_skillHowEdit_textChanged();
+
+    void on_skillHowCopyButton_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -140,6 +150,7 @@ private:
     std::string temp_skill_dir;
     std::string temp_skill_prefix;
     uint16_t temp_skill_id2;
+    uint16_t temp_skill_id1;
 
     std::vector<QString> bcs_bodies;
 

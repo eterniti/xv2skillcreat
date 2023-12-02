@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>661</width>
-    <height>675</height>
+    <height>840</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>20</x>
       <y>20</y>
       <width>621</width>
-      <height>576</height>
+      <height>751</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -290,6 +290,11 @@
       <item>
        <property name="text">
         <string>Awaken</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Blast</string>
        </property>
       </item>
      </widget>
@@ -565,6 +570,112 @@
       </property>
       <property name="text">
        <string>Copy to clipboard</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_113">
+      <property name="geometry">
+       <rect>
+        <x>29</x>
+        <y>470</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>How:</string>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="skillHowEdit">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>470</y>
+        <width>315</width>
+        <height>91</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="skillHowLangComboBox">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>470</y>
+        <width>91</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>English</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Spanish (es)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Spanish (ca)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>French</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>German</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Italian</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Portuguese</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Polish</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Russian</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Chinese (tw)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Chinese (zh)</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Korean</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QPushButton" name="skillHowCopyButton">
+      <property name="geometry">
+       <rect>
+        <x>500</x>
+        <y>470</y>
+        <width>95</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Copy from game</string>
       </property>
      </widget>
     </widget>
@@ -1319,6 +1430,29 @@
        <string>U_44:</string>
       </property>
      </widget>
+     <widget class="QLineEdit" name="cusU48Edit">
+      <property name="geometry">
+       <rect>
+        <x>405</x>
+        <y>501</y>
+        <width>75</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_108">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>503</y>
+        <width>47</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>U_48:</string>
+      </property>
+     </widget>
     </widget>
     <widget class="QWidget" name="idbTab">
      <property name="autoFillBackground">
@@ -1330,7 +1464,7 @@
      <widget class="QLabel" name="label_20">
       <property name="geometry">
        <rect>
-        <x>29</x>
+        <x>79</x>
         <y>110</y>
         <width>31</width>
         <height>16</height>
@@ -1460,7 +1594,7 @@
      <widget class="QLineEdit" name="idbStarsEdit">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>120</x>
         <y>108</y>
         <width>75</width>
         <height>20</height>
@@ -1512,20 +1646,20 @@
      <widget class="QLabel" name="label_34">
       <property name="geometry">
        <rect>
-        <x>28</x>
+        <x>0</x>
         <y>150</y>
-        <width>47</width>
-        <height>13</height>
+        <width>111</width>
+        <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>U_0C:</string>
+       <string>Story Progress Flags:</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="idbU0CEdit">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>120</x>
         <y>148</y>
         <width>75</width>
         <height>20</height>
@@ -1558,7 +1692,7 @@
      <widget class="QLabel" name="label_36">
       <property name="geometry">
        <rect>
-        <x>35</x>
+        <x>85</x>
         <y>190</y>
         <width>41</width>
         <height>16</height>
@@ -1571,7 +1705,7 @@
      <widget class="QLineEdit" name="idbBuyEdit">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>120</x>
         <y>188</y>
         <width>75</width>
         <height>20</height>
@@ -1604,7 +1738,7 @@
      <widget class="QLineEdit" name="idbTpEdit">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>120</x>
         <y>228</y>
         <width>75</width>
         <height>20</height>
@@ -1624,7 +1758,7 @@
      <widget class="QLabel" name="label_38">
       <property name="geometry">
        <rect>
-        <x>40</x>
+        <x>90</x>
         <y>230</y>
         <width>31</width>
         <height>16</height>
@@ -1650,7 +1784,7 @@
      <widget class="QLineEdit" name="idbU24Edit">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>120</x>
         <y>268</y>
         <width>75</width>
         <height>20</height>
@@ -1670,7 +1804,7 @@
      <widget class="QLabel" name="label_40">
       <property name="geometry">
        <rect>
-        <x>28</x>
+        <x>78</x>
         <y>270</y>
         <width>41</width>
         <height>16</height>
@@ -1696,7 +1830,7 @@
      <widget class="QLabel" name="label_42">
       <property name="geometry">
        <rect>
-        <x>480</x>
+        <x>440</x>
         <y>270</y>
         <width>47</width>
         <height>13</height>
@@ -1709,7 +1843,7 @@
      <widget class="QLineEdit" name="idbU2CEdit">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>480</x>
         <y>268</y>
         <width>75</width>
         <height>20</height>
@@ -1719,7 +1853,7 @@
      <widget class="QLabel" name="label_43">
       <property name="geometry">
        <rect>
-        <x>16</x>
+        <x>66</x>
         <y>310</y>
         <width>47</width>
         <height>13</height>
@@ -1732,7 +1866,7 @@
      <widget class="QPushButton" name="idbEff1Button">
       <property name="geometry">
        <rect>
-        <x>70</x>
+        <x>120</x>
         <y>305</y>
         <width>75</width>
         <height>23</height>
@@ -1758,7 +1892,7 @@
      <widget class="QPushButton" name="idbEff3Button">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>480</x>
         <y>305</y>
         <width>75</width>
         <height>23</height>
@@ -1784,7 +1918,7 @@
      <widget class="QLabel" name="label_45">
       <property name="geometry">
        <rect>
-        <x>468</x>
+        <x>427</x>
         <y>310</y>
         <width>47</width>
         <height>13</height>
@@ -1810,7 +1944,7 @@
      <widget class="QLineEdit" name="idbNU0CEdit">
       <property name="geometry">
        <rect>
-        <x>520</x>
+        <x>480</x>
         <y>228</y>
         <width>75</width>
         <height>20</height>
@@ -1820,7 +1954,7 @@
      <widget class="QLabel" name="label_106">
       <property name="geometry">
        <rect>
-        <x>474</x>
+        <x>437</x>
         <y>230</y>
         <width>47</width>
         <height>13</height>
@@ -2831,7 +2965,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>320</y>
+        <y>360</y>
         <width>101</width>
         <height>16</height>
        </rect>
@@ -2863,7 +2997,7 @@
       <property name="geometry">
        <rect>
         <x>110</x>
-        <y>317</y>
+        <y>357</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -2881,7 +3015,7 @@
      <widget class="QLabel" name="label_87">
       <property name="geometry">
        <rect>
-        <x>26</x>
+        <x>46</x>
         <y>110</y>
         <width>61</width>
         <height>16</height>
@@ -2894,7 +3028,7 @@
      <widget class="QLineEdit" name="auraIdEdit">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>110</x>
         <y>108</y>
         <width>90</width>
         <height>20</height>
@@ -2904,7 +3038,7 @@
      <widget class="QCheckBox" name="auraCustomCheck">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>220</x>
         <y>110</y>
         <width>111</width>
         <height>17</height>
@@ -2917,7 +3051,7 @@
      <widget class="QLabel" name="label_88">
       <property name="geometry">
        <rect>
-        <x>26</x>
+        <x>46</x>
         <y>150</y>
         <width>61</width>
         <height>16</height>
@@ -2930,7 +3064,7 @@
      <widget class="QLineEdit" name="auraEf0Edit">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>110</x>
         <y>148</y>
         <width>90</width>
         <height>20</height>
@@ -2940,7 +3074,7 @@
      <widget class="QLabel" name="label_89">
       <property name="geometry">
        <rect>
-        <x>32</x>
+        <x>52</x>
         <y>190</y>
         <width>51</width>
         <height>16</height>
@@ -2953,7 +3087,7 @@
      <widget class="QLineEdit" name="auraEf2Edit">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>110</x>
         <y>188</y>
         <width>90</width>
         <height>20</height>
@@ -2963,7 +3097,7 @@
      <widget class="QLabel" name="label_90">
       <property name="geometry">
        <rect>
-        <x>21</x>
+        <x>41</x>
         <y>230</y>
         <width>71</width>
         <height>16</height>
@@ -2976,7 +3110,7 @@
      <widget class="QLineEdit" name="auraEf4Edit">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>110</x>
         <y>228</y>
         <width>90</width>
         <height>20</height>
@@ -2986,7 +3120,7 @@
      <widget class="QLabel" name="label_91">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>40</x>
         <y>270</y>
         <width>71</width>
         <height>16</height>
@@ -2999,8 +3133,8 @@
      <widget class="QLineEdit" name="auraEf6Edit">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>270</y>
+        <x>110</x>
+        <y>268</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -3078,21 +3212,21 @@
      <widget class="QLabel" name="label_95">
       <property name="geometry">
        <rect>
-        <x>15</x>
-        <y>360</y>
+        <x>30</x>
+        <y>400</y>
         <width>81</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Behaviour 11:</string>
+       <string>BH11 (Stance):</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="auraBH11Edit">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>358</y>
+        <x>110</x>
+        <y>398</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -3102,7 +3236,7 @@
       <property name="geometry">
        <rect>
         <x>355</x>
-        <y>360</y>
+        <y>400</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -3115,7 +3249,7 @@
       <property name="geometry">
        <rect>
         <x>413</x>
-        <y>358</y>
+        <y>398</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -3124,21 +3258,21 @@
      <widget class="QLabel" name="label_97">
       <property name="geometry">
        <rect>
-        <x>15</x>
-        <y>400</y>
+        <x>46</x>
+        <y>440</y>
         <width>81</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Behaviour 10:</string>
+       <string>BH10 (dyt):</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="auraBH10Edit">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>398</y>
+        <x>110</x>
+        <y>438</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -3148,7 +3282,7 @@
       <property name="geometry">
        <rect>
         <x>413</x>
-        <y>398</y>
+        <y>438</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -3158,7 +3292,7 @@
       <property name="geometry">
        <rect>
         <x>355</x>
-        <y>400</y>
+        <y>440</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -3170,8 +3304,8 @@
      <widget class="QCheckBox" name="auraTeleportCheck">
       <property name="geometry">
        <rect>
-        <x>15</x>
-        <y>440</y>
+        <x>35</x>
+        <y>480</y>
         <width>121</width>
         <height>17</height>
        </rect>
@@ -3183,21 +3317,21 @@
      <widget class="QLabel" name="label_99">
       <property name="geometry">
        <rect>
-        <x>337</x>
-        <y>440</y>
-        <width>71</width>
+        <x>296</x>
+        <y>480</y>
+        <width>121</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>Behaviour 13:</string>
+       <string>BH13 (Portrait Switch):</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="auraBH13Edit">
       <property name="geometry">
        <rect>
         <x>413</x>
-        <y>438</y>
+        <y>478</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -3206,21 +3340,21 @@
      <widget class="QLabel" name="label_29">
       <property name="geometry">
        <rect>
-        <x>15</x>
-        <y>480</y>
+        <x>44</x>
+        <y>520</y>
         <width>81</width>
         <height>13</height>
        </rect>
       </property>
       <property name="text">
-       <string>Behaviour 66:</string>
+       <string>BH66 (bcm):</string>
       </property>
      </widget>
      <widget class="QLineEdit" name="auraBH66Edit">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>478</y>
+        <x>110</x>
+        <y>518</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -3229,8 +3363,8 @@
      <widget class="QLabel" name="label_102">
       <property name="geometry">
        <rect>
-        <x>15</x>
-        <y>520</y>
+        <x>35</x>
+        <y>600</y>
         <width>81</width>
         <height>16</height>
        </rect>
@@ -3242,8 +3376,8 @@
      <widget class="QLineEdit" name="auraHairColorEdit">
       <property name="geometry">
        <rect>
-        <x>90</x>
-        <y>518</y>
+        <x>110</x>
+        <y>598</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -3252,8 +3386,8 @@
      <widget class="QToolButton" name="auraGetHairColorButton">
       <property name="geometry">
        <rect>
-        <x>192</x>
-        <y>517</y>
+        <x>212</x>
+        <y>597</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -3272,7 +3406,7 @@
       <property name="geometry">
        <rect>
         <x>282</x>
-        <y>480</y>
+        <y>520</y>
         <width>141</width>
         <height>16</height>
        </rect>
@@ -3285,7 +3419,7 @@
       <property name="geometry">
        <rect>
         <x>413</x>
-        <y>478</y>
+        <y>518</y>
         <width>151</width>
         <height>22</height>
        </rect>
@@ -3310,7 +3444,7 @@
       <property name="geometry">
        <rect>
         <x>331</x>
-        <y>520</y>
+        <y>600</y>
         <width>91</width>
         <height>16</height>
        </rect>
@@ -3323,7 +3457,7 @@
       <property name="geometry">
        <rect>
         <x>413</x>
-        <y>518</y>
+        <y>598</y>
         <width>90</width>
         <height>20</height>
        </rect>
@@ -3333,7 +3467,7 @@
       <property name="geometry">
        <rect>
         <x>515</x>
-        <y>517</y>
+        <y>597</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -3346,6 +3480,152 @@
       </property>
       <property name="toolButtonStyle">
        <enum>Qt::ToolButtonTextOnly</enum>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="auraMoreColorsEdit">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>638</y>
+        <width>403</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_109">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>640</y>
+        <width>91</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>More bcs colors:</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="auraAddMoreColorButton">
+      <property name="geometry">
+       <rect>
+        <x>515</x>
+        <y>637</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Add from</string>
+      </property>
+      <property name="popupMode">
+       <enum>QToolButton::InstantPopup</enum>
+      </property>
+      <property name="toolButtonStyle">
+       <enum>Qt::ToolButtonTextOnly</enum>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="auraBpeEdit">
+      <property name="geometry">
+       <rect>
+        <x>413</x>
+        <y>268</y>
+        <width>90</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_110">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>270</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bpe Id:</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="auraBpeFlag1Check">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>310</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bpe flag 1</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="auraBpeFlag2Check">
+      <property name="geometry">
+       <rect>
+        <x>413</x>
+        <y>310</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bpe flag 2</string>
+      </property>
+     </widget>
+     <widget class="QToolButton" name="aurBpeButton">
+      <property name="geometry">
+       <rect>
+        <x>510</x>
+        <y>267</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Set from</string>
+      </property>
+      <property name="popupMode">
+       <enum>QToolButton::InstantPopup</enum>
+      </property>
+      <property name="toolButtonStyle">
+       <enum>Qt::ToolButtonTextOnly</enum>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="auraBH64Edit">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>558</y>
+        <width>90</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_111">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>560</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>BH64 (detransform):</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_112">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>680</y>
+        <width>501</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Note: for any bcs colors to work in namekians, make sure to set BH10 to -1.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
      </widget>
     </widget>
@@ -3770,6 +4050,63 @@
   <action name="actionFromBcsFileEyes">
    <property name="text">
     <string>From bcs file</string>
+   </property>
+  </action>
+  <action name="actionFromHumBcsMore">
+   <property name="text">
+    <string>From HUM.bcs</string>
+   </property>
+  </action>
+  <action name="actionFromHufBcsMore">
+   <property name="text">
+    <string>From HUF.bcs</string>
+   </property>
+  </action>
+  <action name="actionFromNmcBcsMore">
+   <property name="text">
+    <string>From NMC.bcs</string>
+   </property>
+   <property name="toolTip">
+    <string>From NMC.bcs</string>
+   </property>
+  </action>
+  <action name="actionFromFriBcsMore">
+   <property name="text">
+    <string>From FRI.bcs</string>
+   </property>
+   <property name="toolTip">
+    <string>From FRI.bcs</string>
+   </property>
+  </action>
+  <action name="actionFromMamBcsMore">
+   <property name="text">
+    <string>From MAM.bcs</string>
+   </property>
+   <property name="toolTip">
+    <string>From MAM.bcs</string>
+   </property>
+  </action>
+  <action name="actionFromMafBcsMore">
+   <property name="text">
+    <string>From MAF.bcs</string>
+   </property>
+   <property name="toolTip">
+    <string>From MAF.bcs</string>
+   </property>
+  </action>
+  <action name="actionFromBcsFileMore">
+   <property name="text">
+    <string>From bcs file</string>
+   </property>
+  </action>
+  <action name="actionFromCmnBpe">
+   <property name="text">
+    <string>From cmn.bpe</string>
+   </property>
+  </action>
+  <action name="actionFromCmnBpeBO">
+   <property name="text">
+    <string>From cmn.bpe (only BodyOutline)</string>
    </property>
   </action>
  </widget>

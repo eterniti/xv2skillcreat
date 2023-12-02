@@ -14,6 +14,7 @@
 #include "colordialog.h"
 
 #include "Xenoverse2.h"
+#include "BpeFile.h"
 #include "xv2ins_common.h"
 #include "Config.h"
 #include "debug.h"
@@ -22,8 +23,6 @@
 #define GAME_PREFIX "GAME:///"
 
 #define BODY_ID_TEXT    "Id to use in BAC: "
-
-#define BEHAVIOUR_MAX	29
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -63,6 +62,7 @@ bool MainWindow::Initialize()
     ui->cusChangeSSEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusNumTransEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusU44Edit->setValidator(new QIntValidator(this));
+    ui->cusU48Edit->setValidator(new QIntValidator(this));
     ui->cusCopyButton->addAction(ui->actionFromGameCus);
     ui->cusCopyButton->addAction(ui->actionFromExternalCus);
     ui->cusAcbVoxButton->setStyleSheet("font-weight: bold;");
@@ -132,12 +132,14 @@ bool MainWindow::Initialize()
     ui->auraEf4Edit->setValidator(new QIntValidator(this));
     ui->auraEf5Edit->setValidator(new QIntValidator(this));
     ui->auraEf6Edit->setValidator(new QIntValidator(this));
-    ui->auraBH11Edit->setValidator(new QIntValidator(0, BEHAVIOUR_MAX, this));
+    ui->auraBpeEdit->setValidator(new QIntValidator(this));
+    ui->auraBH11Edit->setValidator(new QIntValidator(-1, BEHAVIOUR_MAX, this));
     ui->auraInt2Edit->setValidator(new QIntValidator(this));
-    ui->auraBH10Edit->setValidator(new QIntValidator(0, BEHAVIOUR_MAX, this));
+    ui->auraBH10Edit->setValidator(new QIntValidator(-1, BEHAVIOUR_MAX, this));
     ui->auraInt3Edit->setValidator(new QIntValidator(this));
-    ui->auraBH13Edit->setValidator(new QIntValidator(0, BEHAVIOUR_MAX, this));
+    ui->auraBH13Edit->setValidator(new QIntValidator(-1, BEHAVIOUR_MAX, this));
     ui->auraBH66Edit->setValidator(new QIntValidator(-1, BEHAVIOUR_MAX, this));
+    ui->auraBH64Edit->setValidator(new QIntValidator(-1, BEHAVIOUR_MAX, this));
     ui->auraHairColorEdit->setValidator(new QIntValidator(this));
     ui->auraEyesColorEdit->setValidator(new QIntValidator(this));
     ui->auraCopyButton->addAction(ui->actionFromGameAur);
@@ -145,9 +147,13 @@ bool MainWindow::Initialize()
     ui->auraCopyButton->addAction(ui->actionFromAuraSkillUsage);
     ui->auraCopyButton->addAction(ui->actionFromAuraCharUsage);
     ui->auraPatchCopyButton->addAction(ui->actionFromAuraPatchSkillUsage);
+    ui->aurBpeButton->addAction(ui->actionFromCmnBpeBO);
+    ui->aurBpeButton->addAction(ui->actionFromCmnBpe);
+    //
     ui->auraGetHairColorButton->addAction(ui->actionFromHumBcs);
     ui->auraGetHairColorButton->addAction(ui->actionFromHufBcs);
     ui->auraGetHairColorButton->addAction(ui->actionFromBcsFile);
+    //
     ui->auraGetEyesColorButton->addAction(ui->actionFromHumBcsEyes);
     ui->auraGetEyesColorButton->addAction(ui->actionFromHufBcsEyes);
     ui->auraGetEyesColorButton->addAction(ui->actionFromNmcBcsEyes);
@@ -155,6 +161,14 @@ bool MainWindow::Initialize()
     ui->auraGetEyesColorButton->addAction(ui->actionFromMamBcsEyes);
     ui->auraGetEyesColorButton->addAction(ui->actionFromMafBcsEyes);
     ui->auraGetEyesColorButton->addAction(ui->actionFromBcsFileEyes);
+    //
+    ui->auraAddMoreColorButton->addAction(ui->actionFromHumBcsMore);
+    ui->auraAddMoreColorButton->addAction(ui->actionFromHufBcsMore);
+    ui->auraAddMoreColorButton->addAction(ui->actionFromNmcBcsMore);
+    ui->auraAddMoreColorButton->addAction(ui->actionFromFriBcsMore);
+    ui->auraAddMoreColorButton->addAction(ui->actionFromMamBcsMore);
+    ui->auraAddMoreColorButton->addAction(ui->actionFromMafBcsMore);
+    ui->auraAddMoreColorButton->addAction(ui->actionFromBcsFileMore);
 
     set_debug_level(2);
     QDir::setCurrent(qApp->applicationDirPath());
@@ -280,6 +294,8 @@ bool MainWindow::ImportSkillDirVisitor(const std::string &path, bool, void *para
             }
 
             bac.ChangeReferencesToSkill(pthis->temp_skill_id2, X2M_DUMMY_ID16);
+            if (pthis->temp_skill_id1 != pthis->temp_skill_id2)
+                bac.ChangeReferencesToSkill(pthis->temp_skill_id1, X2M_DUMMY_ID16_2);
 
             if (!bac.SaveToFile(out_path))
                 return false;
@@ -297,15 +313,37 @@ bool MainWindow::ImportSkillDirVisitor(const std::string &path, bool, void *para
             }
 
             bsa.ChangeReferencesToSkill(pthis->temp_skill_id2, X2M_DUMMY_ID16);
+            if (pthis->temp_skill_id1 != pthis->temp_skill_id2)
+                bsa.ChangeReferencesToSkill(pthis->temp_skill_id1, X2M_DUMMY_ID16_2);
 
             if (!bsa.SaveToFile(out_path))
                 return false;
 
             return true;
         }
+        else if (Utils::EndsWith(path, ".bdm", false))
+        {
+            BdmFile bdm;
+
+            if (!xv2fs->LoadFile(&bdm, path))
+            {
+                DPRINTF("Failed to load bdm \"%s\"\n", path.c_str());
+                return false;
+            }
+
+            if (pthis->temp_skill_id2 != 0)
+                bdm.ChangeReferencesToSkill(pthis->temp_skill_id2, X2M_DUMMY_ID16);
+
+            if (pthis->temp_skill_id1 != pthis->temp_skill_id2)
+                bdm.ChangeReferencesToSkill(pthis->temp_skill_id1, X2M_DUMMY_ID16_2);
+
+            if (!bdm.SaveToFile(out_path))
+                return false;
+
+            return true;
+        }
         else if (Utils::EndsWith(path, ".ean", false) || Utils::EndsWith(path, ".bas", false) ||
-                 Utils::EndsWith(path, ".eepk", false) || Utils::EndsWith(path, ".bcm", false) ||
-                 Utils::EndsWith(path, ".bdm", false))
+                 Utils::EndsWith(path, ".eepk", false) || Utils::EndsWith(path, ".bcm", false))
         {
             size_t size;
             uint8_t *buf = xv2fs->ReadFile(path, &size);
@@ -339,7 +377,7 @@ bool MainWindow::ImportSkillDirVisitor(const std::string &path, bool, void *para
 
 void MainWindow::on_actionImportSkillDir_triggered()
 {
-    ListDialog dialog(ListMode::SKILL, this, nullptr, SKILL_FLAG_SUPER|SKILL_FLAG_ULTIMATE|SKILL_FLAG_EVASIVE|SKILL_FLAG_AWAKEN);
+    ListDialog dialog(ListMode::SKILL, this, nullptr, SKILL_FLAG_SUPER|SKILL_FLAG_ULTIMATE|SKILL_FLAG_EVASIVE|SKILL_FLAG_BLAST|SKILL_FLAG_AWAKEN);
 
     if (!dialog.exec())
         return;
@@ -376,6 +414,7 @@ void MainWindow::on_actionImportSkillDir_triggered()
     }
 
     temp_skill_id2 = skill->id2;
+    temp_skill_id1 = skill->id;
 
     if (!xv2fs->VisitDirectory(skill_dir, true, false, false, ImportSkillDirVisitor, this))
     {
@@ -422,6 +461,7 @@ void MainWindow::ProcessX2m()
     ui->modGuidEdit->setText(Utils::StdStringToQString(x2m->GetModGuid()));
     ui->skillNameEdit->setText(Utils::StdStringToQString(x2m->GetSkillName(ui->skillNameLangComboBox->currentIndex()), false));
     ui->skillDescEdit->setText(Utils::StdStringToQString(x2m->GetSkillDesc(ui->skillDescLangComboBox->currentIndex()), false));
+    ui->skillHowEdit->setText(Utils::StdStringToQString(x2m->GetSkillHow(ui->skillHowLangComboBox->currentIndex()), false));
 
     if (x2m->GetSkillType() == X2mSkillType::SUPER)
     {
@@ -438,10 +478,15 @@ void MainWindow::ProcessX2m()
         ui->skillTypeComboBox->setCurrentIndex(2);
         on_skillTypeComboBox_currentIndexChanged(2);
     }
-    else
+    else if (x2m->GetSkillType() == X2mSkillType::AWAKEN)
     {
         ui->skillTypeComboBox->setCurrentIndex(3);
         on_skillTypeComboBox_currentIndexChanged(3);
+    }
+    else // Blast
+    {
+        ui->skillTypeComboBox->setCurrentIndex(4);
+        on_skillTypeComboBox_currentIndexChanged(4);
     }
 
     // Files tab
@@ -589,23 +634,41 @@ bool MainWindow::Validate()
         return false;
     }
 
-    if (Utils::IsEmptyString(x2m->GetSkillName(XV2_LANG_ENGLISH)))
+    if (ui->skillTypeComboBox->currentIndex() != 4) // Not blast
     {
-        DPRINTF("[INFO] Skill name cannot be empty for english language.\n");
-        return false;
-    }
-
-    if (Utils::IsEmptyString(x2m->GetSkillDesc(XV2_LANG_ENGLISH)))
-    {
-        for (int i = 0; i < XV2_LANG_NUM; i++)
+        if (Utils::IsEmptyString(x2m->GetSkillName(XV2_LANG_ENGLISH)))
         {
-            if (i == XV2_LANG_ENGLISH)
-                continue;
+            DPRINTF("[INFO] Skill name cannot be empty for english language.\n");
+            return false;
+        }
 
-            if (!Utils::IsEmptyString(x2m->GetSkillDesc(i)))
+        if (Utils::IsEmptyString(x2m->GetSkillDesc(XV2_LANG_ENGLISH)))
+        {
+            for (int i = 0; i < XV2_LANG_NUM; i++)
             {
-                DPRINTF("[INFO] If skill desc is empty in english language, it must be empty in the rest too.\n");
-                return false;
+                if (i == XV2_LANG_ENGLISH)
+                    continue;
+
+                if (!Utils::IsEmptyString(x2m->GetSkillDesc(i)))
+                {
+                    DPRINTF("[INFO] If skill desc is empty in english language, it must be empty in the rest too.\n");
+                    return false;
+                }
+            }
+        }
+
+        if (Utils::IsEmptyString(x2m->GetSkillHow(XV2_LANG_ENGLISH)))
+        {
+            for (int i = 0; i < XV2_LANG_NUM; i++)
+            {
+                if (i == XV2_LANG_ENGLISH)
+                    continue;
+
+                if (!Utils::IsEmptyString(x2m->GetSkillHow(i)))
+                {
+                    DPRINTF("[INFO] If skill how is empty in english language, it must be empty in the rest too.\n");
+                    return false;
+                }
             }
         }
     }
@@ -777,8 +840,20 @@ bool MainWindow::Validate()
         return false;
     }
 
+    if (ui->cusU44Edit->text().isEmpty())
+    {
+        DPRINTF("[CUS] U_44 cannot be empty.\n");
+        return false;
+    }
+
+    if (ui->cusU48Edit->text().isEmpty())
+    {
+        DPRINTF("[CUS] U_48 cannot be empty.\n");
+        return false;
+    }
+
     // IDB tab
-    if (ui->idbEnableCheck->isChecked())
+    if (ui->idbEnableCheck->isChecked() && ui->idbEnableCheck->isEnabled())
     {
         if (ui->idbStarsEdit->text().isEmpty())
         {
@@ -908,6 +983,12 @@ bool MainWindow::Validate()
                 DPRINTF("[AURA] HenshinEnd cannot be empty.\n");
                 return false;
             }
+
+            if (ui->auraBpeEdit->text().isEmpty())
+            {
+                DPRINTF("[AURA] Bpe Id cannot be empty.\n");
+                return false;
+            }
         }
         else
         {
@@ -939,6 +1020,12 @@ bool MainWindow::Validate()
         if (ui->auraBH66Edit->text().isEmpty())
         {
             DPRINTF("[AURA] Behaviour 66 cannot be empty.\n");
+            return false;
+        }
+
+        if (ui->auraBH64Edit->text().isEmpty())
+        {
+            DPRINTF("[AURA] Behaviour 64 cannot be empty.\n");
             return false;
         }
 
@@ -990,8 +1077,10 @@ bool MainWindow::Build()
         x2m->SetSkillType(X2mSkillType::ULTIMATE);
     else if (type == 2)
         x2m->SetSkillType(X2mSkillType::EVASIVE);
-    else
+    else if (type == 3)
         x2m->SetSkillType(X2mSkillType::AWAKEN);
+    else
+        x2m->SetSkillType(X2mSkillType::BLAST);
 
     if (x2m->GetSkillType() == X2mSkillType::AWAKEN)
     {
@@ -1167,7 +1256,20 @@ void MainWindow::on_guidButton_clicked()
 
 void MainWindow::on_skillTypeComboBox_currentIndexChanged(int index)
 {
+    bool was_blast = (x2m->GetSkillType() == X2mSkillType::BLAST);
     bool awaken = (index == 3);
+    bool blast = (index == 4);
+
+    if (index == 0)
+        x2m->SetSkillType(X2mSkillType::SUPER);
+    else if (index == 1)
+        x2m->SetSkillType(X2mSkillType::ULTIMATE);
+    else if (index == 2)
+        x2m->SetSkillType(X2mSkillType::EVASIVE);
+    else if (index == 3)
+        x2m->SetSkillType(X2mSkillType::AWAKEN);
+    else
+        x2m->SetSkillType(X2mSkillType::BLAST);
 
     ui->skillTransComboBox->setEnabled(awaken);
     ui->skillTransCopyButton->setEnabled(awaken);
@@ -1206,6 +1308,37 @@ void MainWindow::on_skillTypeComboBox_currentIndexChanged(int index)
     {
         while (x2m->GetNumSkillTransNames() > 0)
             x2m->RemoveSkillTransName(0);
+    }
+
+    if (blast)
+    {
+        ui->skillNameEdit->setDisabled(true);
+        ui->skillNameLangComboBox->setDisabled(true);
+        ui->skillNameCopyButton->setDisabled(true);
+        ui->skillDescEdit->setDisabled(true);
+        ui->skillDescLangComboBox->setDisabled(true);
+        ui->skillDescCopyButton->setDisabled(true);
+        ui->skillHowEdit->setDisabled(true);
+        ui->skillHowLangComboBox->setDisabled(true);
+        ui->skillHowCopyButton->setDisabled(true);
+
+        ui->idbEnableCheck->setDisabled(true);
+        on_idbEnableCheck_clicked();
+    }
+    else if (was_blast)
+    {
+        ui->skillNameEdit->setEnabled(true);
+        ui->skillNameLangComboBox->setEnabled(true);
+        ui->skillNameCopyButton->setEnabled(true);
+        ui->skillDescEdit->setEnabled(true);
+        ui->skillDescLangComboBox->setEnabled(true);
+        ui->skillDescCopyButton->setEnabled(true);
+        ui->skillHowEdit->setEnabled(true);
+        ui->skillHowLangComboBox->setEnabled(true);
+        ui->skillHowCopyButton->setEnabled(true);
+
+        ui->idbEnableCheck->setEnabled(true);
+        on_idbEnableCheck_clicked();
     }
 }
 
@@ -1342,6 +1475,73 @@ void MainWindow::on_skillDescCopyButton_clicked()
     if (lang >= 0 && lang < XV2_LANG_NUM)
     {
         ui->skillDescEdit->setText(Utils::StdStringToQString(x2m->GetSkillDesc(lang), false));
+    }
+}
+
+void MainWindow::on_skillHowLangComboBox_currentIndexChanged(int index)
+{
+    ui->skillHowEdit->setText(Utils::StdStringToQString(x2m->GetSkillHow(index), false));
+}
+
+void MainWindow::on_skillHowEdit_textChanged()
+{
+    QString text = ui->skillHowEdit->toPlainText();
+    x2m->SetSkillHow(Utils::QStringToStdString(text, false), ui->skillHowLangComboBox->currentIndex());
+}
+
+void MainWindow::on_skillHowCopyButton_clicked()
+{
+    ListDialog dialog(ListMode::SKILL, this, nullptr, SKILL_FLAG_SUPER|SKILL_FLAG_ULTIMATE|SKILL_FLAG_EVASIVE|SKILL_FLAG_AWAKEN);
+
+    if (!dialog.exec())
+        return;
+
+    const CusSkill *skill = game_cus->FindSkillAnyByID(dialog.GetResultData());
+    if (!skill)
+        return;
+
+    std::vector<std::string> how;
+    how.resize(XV2_LANG_NUM);
+
+    if (game_cus->FindSuperSkillByID(skill->id))
+    {
+        for (int i = 0; i < XV2_LANG_NUM; i++)
+        {
+            Xenoverse2::GetSuperSkillHow(skill->id2, how[i], i);
+        }
+    }
+    else if (game_cus->FindUltimateSkillByID(skill->id))
+    {
+        for (int i = 0; i < XV2_LANG_NUM; i++)
+        {
+            Xenoverse2::GetUltimateSkillHow(skill->id2, how[i], i);
+        }
+    }
+    else if (game_cus->FindEvasiveSkillByID(skill->id))
+    {
+        for (int i = 0; i < XV2_LANG_NUM; i++)
+        {
+            Xenoverse2::GetEvasiveSkillHow(skill->id2, how[i], i);
+        }
+    }
+    else if (game_cus->FindAwakenSkillByID(skill->id))
+    {
+        for (int i = 0; i < XV2_LANG_NUM; i++)
+        {
+            Xenoverse2::GetAwakenSkillHow(skill->id2, how[i], i);
+        }
+    }
+
+    for (int i = 0; i < XV2_LANG_NUM; i++)
+    {
+        x2m->SetSkillHow(how[i], i);
+    }
+
+    int lang = ui->skillHowLangComboBox->currentIndex();
+
+    if (lang >= 0 && lang < XV2_LANG_NUM)
+    {
+        ui->skillHowEdit->setText(Utils::StdStringToQString(x2m->GetSkillHow(lang), false));
     }
 }
 
@@ -1573,6 +1773,7 @@ void MainWindow::SkillToGui(const CusSkill &skill)
     ui->cusChangeSSEdit->setText(QString("%1").arg((int16_t)skill.change_skillset));
     ui->cusNumTransEdit->setText(QString("%1").arg((int16_t)skill.num_transforms));
     ui->cusU44Edit->setText(QString("%1").arg((int32_t)skill.unk_44));
+    ui->cusU48Edit->setText(QString("%1").arg((int32_t)skill.unk_48));
 
     ui->cusEanEdit->setText(Utils::StdStringToQString(skill.paths[0], false));
     ui->cusCamEanEdit->setText(Utils::StdStringToQString(skill.paths[1], false));
@@ -1629,7 +1830,8 @@ void MainWindow::GuiToSkill(CusSkill &skill)
     skill.model = (uint16_t) ui->cusModelEdit->text().toInt();
     skill.change_skillset = (uint16_t) ui->cusChangeSSEdit->text().toInt();
     skill.num_transforms = (uint16_t) ui->cusNumTransEdit->text().toInt();
-    skill.unk_44 = (uint32_t) ui->cusNumTransEdit->text().toInt();
+    skill.unk_44 = (uint32_t) ui->cusU44Edit->text().toInt();
+    skill.unk_48 = (uint32_t) ui->cusU48Edit->text().toInt();
 
     skill.paths[0] = Utils::QStringToStdString(ui->cusEanEdit->text(), false);
     skill.paths[1] = Utils::QStringToStdString(ui->cusCamEanEdit->text(), false);
@@ -1947,7 +2149,7 @@ void MainWindow::EditIdbEffect(IdbEffect &effect)
 
 void MainWindow::on_idbEnableCheck_clicked()
 {
-    bool checked = ui->idbEnableCheck->isChecked();
+    bool checked = ui->idbEnableCheck->isChecked() && ui->idbEnableCheck->isEnabled();
 
     ui->idbCopyButton->setEnabled(checked);
     ui->idbHumCheck->setEnabled(checked);
@@ -2334,6 +2536,10 @@ void MainWindow::AuraToGui(const X2mSkillAura &aura)
         ui->auraEf4Edit->setEnabled(true);
         ui->auraEf5Edit->setEnabled(true);
         ui->auraEf6Edit->setEnabled(true);
+        ui->auraBpeEdit->setEnabled(true);
+        ui->aurBpeButton->setEnabled(true);
+        ui->auraBpeFlag1Check->setEnabled(true);
+        ui->auraBpeFlag2Check->setEnabled(true);
     }
     else
     {
@@ -2348,6 +2554,10 @@ void MainWindow::AuraToGui(const X2mSkillAura &aura)
         ui->auraEf4Edit->setDisabled(true);
         ui->auraEf5Edit->setDisabled(true);
         ui->auraEf6Edit->setDisabled(true);
+        ui->auraBpeEdit->setDisabled(true);
+        ui->aurBpeButton->setDisabled(true);
+        ui->auraBpeFlag1Check->setDisabled(true);
+        ui->auraBpeFlag2Check->setDisabled(true);
     }
 
     if (aura.aura.effects.size() >= 1)
@@ -2413,12 +2623,16 @@ void MainWindow::AuraToGui(const X2mSkillAura &aura)
         ui->auraEf6Edit->setText("-1");
     }
 
-    ui->auraBH11Edit->setText(QString("%1").arg(aura.data.behaviour_11));
+    ui->auraBpeEdit->setText(QString("%1").arg(aura.extra.bpe_id));
+    ui->auraBpeFlag1Check->setChecked(aura.extra.flag1);
+    ui->auraBpeFlag2Check->setChecked(aura.extra.flag2);
+
+    ui->auraBH11Edit->setText(QString("%1").arg((int8_t)aura.data.behaviour_11));
     ui->auraInt2Edit->setText(QString("%1").arg((int32_t)aura.data.integer_2));
-    ui->auraBH10Edit->setText(QString("%1").arg(aura.data.behaviour_10));
+    ui->auraBH10Edit->setText(QString("%1").arg((int8_t)aura.data.behaviour_10));
     ui->auraInt3Edit->setText(QString("%1").arg((int32_t)aura.data.integer_3));
     ui->auraTeleportCheck->setChecked(aura.data.force_teleport);
-    ui->auraBH13Edit->setText(QString("%1").arg(aura.data.behaviour_13));
+    ui->auraBH13Edit->setText(QString("%1").arg((int8_t)aura.data.behaviour_13));
 
     if (!aura.data.force_teleport)
     {
@@ -2431,10 +2645,13 @@ void MainWindow::AuraToGui(const X2mSkillAura &aura)
         ui->auraBH66Edit->setEnabled(false);
     }
 
+    ui->auraBH64Edit->setText(QString("%1").arg((int8_t)aura.data.behaviour_64));
+
     ui->auraRemoveHairAccCombo->setCurrentIndex(((int8_t)aura.data.remove_hair_accessories) + 1);
 
     ui->auraHairColorEdit->setText(QString("%1").arg((int32_t)aura.data.bcs_hair_color));
     ui->auraEyesColorEdit->setText(QString("%1").arg((int32_t)aura.data.bcs_eyes_color));
+    ui->auraMoreColorsEdit->setText(Utils::StdStringToQString(aura.data.bcs_additional_colors, false));
 }
 
 void MainWindow::GuiToAura(X2mSkillAura &aura)
@@ -2454,10 +2671,12 @@ void MainWindow::GuiToAura(X2mSkillAura &aura)
     if (ui->auraCustomCheck->isChecked())
     {
         aura.data.aur_aura_id = X2M_INVALID_ID16;
+        aura.extra.aur_id = X2M_INVALID_ID;
     }
     else
     {
         aura.data.aur_aura_id = (uint16_t) ui->auraIdEdit->text().toInt();
+        aura.extra.aur_id = -1;
     }
 
     aura.aura.effects[0].id = (uint32_t) ui->auraEf0Edit->text().toInt();
@@ -2467,13 +2686,16 @@ void MainWindow::GuiToAura(X2mSkillAura &aura)
     aura.aura.effects[4].id = (uint32_t) ui->auraEf4Edit->text().toInt();
     aura.aura.effects[5].id = (uint32_t) ui->auraEf5Edit->text().toInt();
     aura.aura.effects[6].id = (uint32_t) ui->auraEf6Edit->text().toInt();
+    aura.extra.bpe_id = ui->auraBpeEdit->text().toInt();
+    aura.extra.flag1 = ui->auraBpeFlag1Check->isChecked();
+    aura.extra.flag2 = ui->auraBpeFlag2Check->isChecked();
 
-    aura.data.behaviour_11 = (uint8_t) ui->auraBH11Edit->text().toUInt();
+    aura.data.behaviour_11 = (uint8_t) ui->auraBH11Edit->text().toInt();
     aura.data.integer_2 = (uint32_t) ui->auraInt2Edit->text().toInt();
-    aura.data.behaviour_10 = (uint8_t) ui->auraBH10Edit->text().toUInt();
+    aura.data.behaviour_10 = (uint8_t) ui->auraBH10Edit->text().toInt();
     aura.data.integer_3 = (uint32_t) ui->auraInt3Edit->text().toInt();
     aura.data.force_teleport = ui->auraTeleportCheck->isChecked();
-    aura.data.behaviour_13 = (uint8_t) ui->auraBH13Edit->text().toUInt();
+    aura.data.behaviour_13 = (uint8_t) ui->auraBH13Edit->text().toInt();
 
     if (!aura.data.force_teleport)
     {
@@ -2485,10 +2707,13 @@ void MainWindow::GuiToAura(X2mSkillAura &aura)
         aura.data.behaviour_66 = 0xFF;
     }
 
+    aura.data.behaviour_64 = (uint8_t) ui->auraBH64Edit->text().toInt();
+
     aura.data.remove_hair_accessories = (uint8_t) (ui->auraRemoveHairAccCombo->currentIndex() - 1);
 
     aura.data.bcs_hair_color = (uint32_t) ui->auraHairColorEdit->text().toInt();
     aura.data.bcs_eyes_color = (uint32_t) ui->auraEyesColorEdit->text().toInt();
+    aura.data.bcs_additional_colors = Utils::QStringToStdString(ui->auraMoreColorsEdit->text().trimmed(), false);
 }
 
 void MainWindow::BodyToGui(const X2mBody &body, const QString body_xml)
@@ -2598,6 +2823,10 @@ void MainWindow::on_auraEnableCheck_clicked()
     ui->auraEf4Edit->setEnabled(checked && checked_custom);
     ui->auraEf5Edit->setEnabled(checked && checked_custom);
     ui->auraEf6Edit->setEnabled(checked && checked_custom);
+    ui->auraBpeEdit->setEnabled(checked && checked_custom);
+    ui->aurBpeButton->setEnabled(checked && checked_custom);
+    ui->auraBpeFlag1Check->setEnabled(checked && checked_custom);
+    ui->auraBpeFlag2Check->setEnabled(checked && checked_custom);
     ui->auraBH11Edit->setEnabled(checked);
     ui->auraInt2Edit->setEnabled(checked);
     ui->auraBH10Edit->setEnabled(checked);
@@ -2605,8 +2834,13 @@ void MainWindow::on_auraEnableCheck_clicked()
     ui->auraTeleportCheck->setEnabled(checked);
     ui->auraBH13Edit->setEnabled(checked);
     ui->auraBH66Edit->setEnabled(checked);
+    ui->auraBH64Edit->setEnabled(checked);
     ui->auraHairColorEdit->setEnabled(checked);
     ui->auraGetHairColorButton->setEnabled(checked);
+    ui->auraEyesColorEdit->setEnabled(checked);
+    ui->auraGetEyesColorButton->setEnabled(checked);
+    ui->auraMoreColorsEdit->setEnabled(checked);
+    ui->auraAddMoreColorButton->setEnabled(checked);
     ui->auraRemoveHairAccCombo->setEnabled(checked);
 
     if (checked)
@@ -2663,6 +2897,10 @@ void MainWindow::on_auraCustomCheck_clicked()
         ui->auraEf4Edit->setEnabled(true);
         ui->auraEf5Edit->setEnabled(true);
         ui->auraEf6Edit->setEnabled(true);
+        ui->auraBpeEdit->setEnabled(true);
+        ui->aurBpeButton->setEnabled(true);
+        ui->auraBpeFlag1Check->setEnabled(true);
+        ui->auraBpeFlag2Check->setEnabled(true);
     }
     else
     {
@@ -2674,6 +2912,10 @@ void MainWindow::on_auraCustomCheck_clicked()
         ui->auraEf4Edit->setDisabled(true);
         ui->auraEf5Edit->setDisabled(true);
         ui->auraEf6Edit->setDisabled(true);
+        ui->auraBpeEdit->setDisabled(true);
+        ui->aurBpeButton->setDisabled(true);
+        ui->auraBpeFlag1Check->setDisabled(true);
+        ui->auraBpeFlag2Check->setDisabled(true);
     }
 }
 
@@ -2771,7 +3013,8 @@ void MainWindow::on_auraCopyButton_triggered(QAction *arg1)
 
             if (existing_aura)
             {
-                aura.aura = *existing_aura;
+                aura.aura = *existing_aura;                
+                Xenoverse2::GetAuraExtra(existing_aura->id, aura.extra);
 
                 if (aura.data.aur_aura_id != X2M_INVALID_ID16)
                     aura.data.aur_aura_id = aura.aura.id;
@@ -2801,6 +3044,7 @@ void MainWindow::on_auraCopyButton_triggered(QAction *arg1)
             if (existing_aura)
             {
                 aura.aura = *existing_aura;
+                Xenoverse2::GetAuraExtra(existing_aura->id, aura.extra);
 
                 if (aura.data.aur_aura_id != X2M_INVALID_ID16)
                     aura.data.aur_aura_id = aura.aura.id;
@@ -2852,6 +3096,7 @@ void MainWindow::on_auraCopyButton_triggered(QAction *arg1)
                 return;
 
             aura.aura = auras[idx];
+            Xenoverse2::GetAuraExtra(auras[idx].id, aura.extra);
 
             if (aura.data.aur_aura_id != X2M_INVALID_ID16)
                 aura.data.aur_aura_id = aura.aura.id;
@@ -2897,14 +3142,27 @@ void MainWindow::on_auraPatchCopyButton_triggered(QAction *arg1)
                 aura.data.remove_hair_accessories = data->remove_hair_accessories;
                 aura.data.bcs_hair_color = data->bcs_hair_color;
                 aura.data.bcs_eyes_color = data->bcs_eyes_color;
+                aura.data.bcs_additional_colors = data->bcs_additional_colors;
             }
             else
             {
+                QMessageBox box(this);
+
+                box.addButton("Set", QMessageBox::YesRole);
+                box.addButton("Don't set", QMessageBox::NoRole);
+                box.setText("Do you want to set behaviour 66 from this skill too?\n\n"
+                            "Behaviour 66 allows you to get moveset functionaility like teleport in Super Saiyan or Beast Form combo.\n"
+                            "(Note: behaviour 66 is only used if force teleport is left unchecked)");
+                box.setIcon(QMessageBox::Icon::Question);
+
+                bool copy66 = (box.exec() == 0);
+
                 if (idx <= BEHAVIOUR_MAX)
                 {
                     aura.data.behaviour_11 = idx;
                     aura.data.behaviour_10 = idx;
                     aura.data.behaviour_13 = idx;
+                    aura.data.behaviour_64 = idx;
                 }
 
                 if (idx == 1 || idx == 5 || idx == 21 || idx == 23)
@@ -2924,7 +3182,7 @@ void MainWindow::on_auraPatchCopyButton_triggered(QAction *arg1)
                     aura.data.integer_3 = 0;
 
                 aura.data.force_teleport = false;
-                aura.data.behaviour_66 = 0xFF;
+                aura.data.behaviour_66 = (copy66) ? idx : 0xFF;
                 aura.data.remove_hair_accessories = 0xFF;
 
                 if (idx == 24 && aura.data.bcs_hair_color == 0xFFFFFFFF) // Case of SSJ blue
@@ -2960,6 +3218,8 @@ void MainWindow::on_auraPatchCopyButton_triggered(QAction *arg1)
                 {
                     aura.data.bcs_eyes_color = 0xFFFFFFFF;
                 }
+
+                aura.data.bcs_additional_colors = "";
             }
         }
 
@@ -3364,4 +3624,120 @@ void MainWindow::on_guidCopyButton_clicked()
 {
     QClipboard *clipboard = QApplication::clipboard();
     clipboard->setText(ui->modGuidEdit->text());
+}
+
+void MainWindow::on_auraAddMoreColorButton_triggered(QAction *arg1)
+{
+    BcsFile *bcs;
+    bool external = false;
+
+    if (arg1 == ui->actionFromHumBcsMore)
+    {
+        bcs = game_hum_bcs;
+    }
+    else if (arg1 == ui->actionFromHufBcsMore)
+    {
+        bcs = game_huf_bcs;
+    }
+    else if (arg1 == ui->actionFromNmcBcsMore)
+    {
+        bcs = game_nmc_bcs;
+    }
+    else if (arg1 == ui->actionFromFriBcsMore)
+    {
+        bcs = game_fri_bcs;
+    }
+    else if (arg1 == ui->actionFromMamBcsMore)
+    {
+        bcs = game_mam_bcs;
+    }
+    else if (arg1 == ui->actionFromMafBcsMore)
+    {
+        bcs = game_maf_bcs;
+    }
+    else if (arg1 == ui->actionFromBcsFileMore)
+    {
+        QString file = QFileDialog::getOpenFileName(this, "External BCS", config.lf_external_bcs, "BCS Files (*.bcs *.bcs.xml)");
+
+        if (file.isNull())
+            return;
+
+        config.lf_external_bcs = file;
+
+        bcs = new BcsFile();
+        if (!bcs->SmartLoad(Utils::QStringToStdString(file)))
+        {
+            DPRINTF("Failed to load bcs file.\n");
+            delete bcs;
+            return;
+        }
+
+        external = true;
+    }
+    else
+    {
+        return;
+    }
+
+    ListDialog dialog(ListMode::BCS_ADDITIONAL_COLORS, this, bcs);
+
+    if (!dialog.exec())
+    {
+        if (external)
+            delete bcs;
+
+        return;
+    }
+
+    QString part = dialog.GetResult();
+
+    uint32_t color;
+    bool set = OpenBcsColorDialog(bcs, Utils::QStringToStdString(part, false), 0xFFFFFFFF, &color);
+
+    if (set)
+    {
+        QString text = part + ":" + QString("%1").arg(color);
+        QString prev_text = ui->auraMoreColorsEdit->text().trimmed();
+        if (prev_text.length() > 0)
+        {
+            text = prev_text + "," + text;
+        }
+
+        ui->auraMoreColorsEdit->setText(text);
+    }
+
+    if (external)
+        delete bcs;
+}
+
+
+void MainWindow::on_aurBpeButton_triggered(QAction *arg1)
+{
+    bool outline = false;
+
+    if (arg1 == ui->actionFromCmnBpeBO)
+        outline = true;
+    else if (arg1 != ui->actionFromCmnBpe)
+        return;
+
+    BpeFile bpe;
+    if (!xv2fs->LoadFile(&bpe, "/data/pe/cmn.bpe"))
+    {
+        DPRINTF("Load of bpe failed.\n");
+        return;
+    }
+
+    ListDialog dialog(ListMode::BPE, this, &bpe, (outline) ? BPE_FLAG_OUTLINE : 0);
+    if (dialog.exec())
+    {
+        QString ns = dialog.GetResult();
+        if (!outline)
+        {
+            int idx = ns.indexOf(" (");
+            if (idx >= 0)
+                ns = ns.mid(0, idx);
+        }
+
+        ui->auraBpeEdit->setText(ns);
+    }
 }
