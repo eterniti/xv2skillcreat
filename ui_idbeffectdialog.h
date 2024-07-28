@@ -141,6 +141,8 @@ public:
     QLabel *label_57;
     QLineEdit *nu4CEdit;
     QLabel *label_58;
+    QLineEdit *nu0CEdit;
+    QLabel *label_59;
 
     void setupUi(QDialog *IdbEffectDialog)
     {
@@ -500,6 +502,12 @@ public:
         label_58 = new QLabel(IdbEffectDialog);
         label_58->setObjectName(QStringLiteral("label_58"));
         label_58->setGeometry(QRect(82, 590, 47, 13));
+        nu0CEdit = new QLineEdit(IdbEffectDialog);
+        nu0CEdit->setObjectName(QStringLiteral("nu0CEdit"));
+        nu0CEdit->setGeometry(QRect(370, 588, 100, 20));
+        label_59 = new QLabel(IdbEffectDialog);
+        label_59->setObjectName(QStringLiteral("label_59"));
+        label_59->setGeometry(QRect(323, 590, 49, 16));
 
         retranslateUi(IdbEffectDialog);
 
@@ -567,6 +575,7 @@ public:
         label_25->setText(QApplication::translate("IdbEffectDialog", "F_B4:", 0));
         label_57->setText(QApplication::translate("IdbEffectDialog", "NU_48:", 0));
         label_58->setText(QApplication::translate("IdbEffectDialog", "NU_4C:", 0));
+        label_59->setText(QApplication::translate("IdbEffectDialog", "NU_0C:", 0));
     } // retranslateUi
 
 };

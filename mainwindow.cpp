@@ -81,6 +81,9 @@ bool MainWindow::Initialize()
     ui->idbU28Edit->setValidator(new QIntValidator(this));
     ui->idbU2CEdit->setValidator(new QIntValidator(this));
     ui->idbNU0CEdit->setValidator(new QIntValidator(this));
+    ui->idbNU0AEdit->setValidator(new QIntValidator(-32768, 32767, this));
+    ui->idbNU2CEdit->setValidator(new QIntValidator(this));
+    ui->idbStpEdit->setValidator(new QIntValidator(this));
     ui->idbCopyButton->addAction(ui->actionFromGameIdb);
     // Pup tab
     ui->pupU04Edit->setValidator(new QIntValidator(this));
@@ -634,7 +637,7 @@ bool MainWindow::Validate()
         return false;
     }
 
-    if (ui->skillTypeComboBox->currentIndex() != 4) // Not blast
+    if (ui->skillTypeComboBox->currentIndex() != 4 || x2m->BlastSkillSsIntended()) // Not blast or ss intended
     {
         if (Utils::IsEmptyString(x2m->GetSkillName(XV2_LANG_ENGLISH)))
         {
@@ -642,32 +645,35 @@ bool MainWindow::Validate()
             return false;
         }
 
-        if (Utils::IsEmptyString(x2m->GetSkillDesc(XV2_LANG_ENGLISH)))
+        if (ui->skillTypeComboBox->currentIndex() != 4)
         {
-            for (int i = 0; i < XV2_LANG_NUM; i++)
+            if (Utils::IsEmptyString(x2m->GetSkillDesc(XV2_LANG_ENGLISH)))
             {
-                if (i == XV2_LANG_ENGLISH)
-                    continue;
-
-                if (!Utils::IsEmptyString(x2m->GetSkillDesc(i)))
+                for (int i = 0; i < XV2_LANG_NUM; i++)
                 {
-                    DPRINTF("[INFO] If skill desc is empty in english language, it must be empty in the rest too.\n");
-                    return false;
+                    if (i == XV2_LANG_ENGLISH)
+                        continue;
+
+                    if (!Utils::IsEmptyString(x2m->GetSkillDesc(i)))
+                    {
+                        DPRINTF("[INFO] If skill desc is empty in english language, it must be empty in the rest too.\n");
+                        return false;
+                    }
                 }
             }
-        }
 
-        if (Utils::IsEmptyString(x2m->GetSkillHow(XV2_LANG_ENGLISH)))
-        {
-            for (int i = 0; i < XV2_LANG_NUM; i++)
+            if (Utils::IsEmptyString(x2m->GetSkillHow(XV2_LANG_ENGLISH)))
             {
-                if (i == XV2_LANG_ENGLISH)
-                    continue;
-
-                if (!Utils::IsEmptyString(x2m->GetSkillHow(i)))
+                for (int i = 0; i < XV2_LANG_NUM; i++)
                 {
-                    DPRINTF("[INFO] If skill how is empty in english language, it must be empty in the rest too.\n");
-                    return false;
+                    if (i == XV2_LANG_ENGLISH)
+                        continue;
+
+                    if (!Utils::IsEmptyString(x2m->GetSkillHow(i)))
+                    {
+                        DPRINTF("[INFO] If skill how is empty in english language, it must be empty in the rest too.\n");
+                        return false;
+                    }
                 }
             }
         }
@@ -1312,8 +1318,8 @@ void MainWindow::on_skillTypeComboBox_currentIndexChanged(int index)
 
     if (blast)
     {
-        ui->skillNameEdit->setDisabled(true);
-        ui->skillNameLangComboBox->setDisabled(true);
+        ui->skillNameEdit->setDisabled(!x2m->BlastSkillSsIntended());
+        ui->skillNameLangComboBox->setDisabled(!x2m->BlastSkillSsIntended());
         ui->skillNameCopyButton->setDisabled(true);
         ui->skillDescEdit->setDisabled(true);
         ui->skillDescLangComboBox->setDisabled(true);
@@ -1321,6 +1327,7 @@ void MainWindow::on_skillTypeComboBox_currentIndexChanged(int index)
         ui->skillHowEdit->setDisabled(true);
         ui->skillHowLangComboBox->setDisabled(true);
         ui->skillHowCopyButton->setDisabled(true);
+        ui->skillBlastSsIntended->setEnabled(true);
 
         ui->idbEnableCheck->setDisabled(true);
         on_idbEnableCheck_clicked();
@@ -1336,9 +1343,14 @@ void MainWindow::on_skillTypeComboBox_currentIndexChanged(int index)
         ui->skillHowEdit->setEnabled(true);
         ui->skillHowLangComboBox->setEnabled(true);
         ui->skillHowCopyButton->setEnabled(true);
+        ui->skillBlastSsIntended->setDisabled(true);
 
         ui->idbEnableCheck->setEnabled(true);
         on_idbEnableCheck_clicked();
+    }
+    else
+    {
+        ui->skillBlastSsIntended->setDisabled(true);
     }
 }
 
@@ -2084,6 +2096,9 @@ void MainWindow::IdbEntryToGui(const IdbEntry &entry)
     ui->idbU28Edit->setText(QString("%1").arg((int32_t)entry.unk_24[1]));
     ui->idbU2CEdit->setText(QString("%1").arg((int32_t)entry.unk_24[2]));
     ui->idbNU0CEdit->setText(QString("%1").arg((int32_t)entry.new_unk_0C));
+    ui->idbNU0AEdit->setText(QString("%1").arg((int16_t)entry.new_unk_0A));
+    ui->idbNU2CEdit->setText(QString("%1").arg((int32_t)entry.new_unk_2C));
+    ui->idbStpEdit->setText(QString("%1").arg((int32_t)entry.stp));
 
     ui->idbHumCheck->setChecked(entry.racelock & IDB_RACE_HUM);
     ui->idbHufCheck->setChecked(entry.racelock & IDB_RACE_HUF);
@@ -2109,6 +2124,9 @@ void MainWindow::GuiToIdbEntry(IdbEntry &entry)
     entry.unk_24[1] = (uint32_t) ui->idbU28Edit->text().toInt();
     entry.unk_24[2] = (uint32_t) ui->idbU2CEdit->text().toInt();
     entry.new_unk_0C = (uint32_t) ui->idbNU0CEdit->text().toInt();
+    entry.new_unk_0A = (uint16_t) ui->idbNU0AEdit->text().toInt();
+    entry.new_unk_2C = (uint32_t) ui->idbNU2CEdit->text().toInt();
+    entry.stp = (uint32_t) ui->idbStpEdit->text().toInt();
 
     entry.racelock = 0;
 
@@ -2175,6 +2193,9 @@ void MainWindow::on_idbEnableCheck_clicked()
     ui->idbEff2Button->setEnabled(checked);
     ui->idbEff3Button->setEnabled(checked);
     ui->idbNU0CEdit->setEnabled(checked);
+    ui->idbNU0AEdit->setEnabled(checked);
+    ui->idbNU2CEdit->setEnabled(checked);
+    ui->idbStpEdit->setEnabled(checked);
 
     IdbEntry &entry = x2m->GetSkillIdbEntry();
 
@@ -3740,4 +3761,13 @@ void MainWindow::on_aurBpeButton_triggered(QAction *arg1)
 
         ui->auraBpeEdit->setText(ns);
     }
+}
+
+void MainWindow::on_skillBlastSsIntended_clicked()
+{
+    bool checked = ui->skillBlastSsIntended->isChecked() && ui->skillBlastSsIntended->isEnabled();
+    x2m->SetBlastSkillSsIntended(checked);
+
+    if (ui->skillTypeComboBox->currentIndex() == 4)
+        on_skillTypeComboBox_currentIndexChanged(4); // Reload some things
 }

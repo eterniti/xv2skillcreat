@@ -213,6 +213,11 @@
         <string>Korean</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>Japanese</string>
+       </property>
+      </item>
      </widget>
      <widget class="QLabel" name="label_3">
       <property name="geometry">
@@ -390,6 +395,11 @@
         <string>Korean</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>Japanese</string>
+       </property>
+      </item>
      </widget>
      <widget class="QPushButton" name="skillDescCopyButton">
       <property name="geometry">
@@ -517,6 +527,11 @@
       <item>
        <property name="text">
         <string>Korean</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Japanese</string>
        </property>
       </item>
      </widget>
@@ -664,6 +679,11 @@
         <string>Korean</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>Japanese</string>
+       </property>
+      </item>
      </widget>
      <widget class="QPushButton" name="skillHowCopyButton">
       <property name="geometry">
@@ -676,6 +696,19 @@
       </property>
       <property name="text">
        <string>Copy from game</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="skillBlastSsIntended">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>600</y>
+        <width>321</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>This blast skill will be used by a Super Soul</string>
       </property>
      </widget>
     </widget>
@@ -1748,8 +1781,8 @@
      <widget class="QLineEdit" name="idbModelEdit">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>228</y>
+        <x>480</x>
+        <y>188</y>
         <width>75</width>
         <height>20</height>
        </rect>
@@ -1771,8 +1804,8 @@
      <widget class="QLabel" name="label_39">
       <property name="geometry">
        <rect>
-        <x>257</x>
-        <y>230</y>
+        <x>437</x>
+        <y>190</y>
         <width>47</width>
         <height>13</height>
        </rect>
@@ -1962,6 +1995,75 @@
       </property>
       <property name="text">
        <string>NU_0C:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="idbStpEdit">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>228</y>
+        <width>75</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_114">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>230</y>
+        <width>31</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>STP:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="idbNU0AEdit">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>108</y>
+        <width>75</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_115">
+      <property name="geometry">
+       <rect>
+        <x>436</x>
+        <y>110</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NU_0A:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="idbNU2CEdit">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>148</y>
+        <width>75</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_116">
+      <property name="geometry">
+       <rect>
+        <x>436</x>
+        <y>150</y>
+        <width>49</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>NU_2C:</string>
       </property>
      </widget>
     </widget>

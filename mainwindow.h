@@ -140,6 +140,8 @@ private slots:
 
     void on_skillHowCopyButton_clicked();
 
+    void on_skillBlastSsIntended_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event);
 

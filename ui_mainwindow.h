@@ -104,6 +104,7 @@ public:
     QTextEdit *skillHowEdit;
     QComboBox *skillHowLangComboBox;
     QPushButton *skillHowCopyButton;
+    QCheckBox *skillBlastSsIntended;
     QWidget *filesTab;
     QLabel *label_7;
     QLabel *label_8;
@@ -211,6 +212,12 @@ public:
     QCheckBox *idbEnableCheck;
     QLineEdit *idbNU0CEdit;
     QLabel *label_106;
+    QLineEdit *idbStpEdit;
+    QLabel *label_114;
+    QLineEdit *idbNU0AEdit;
+    QLabel *label_115;
+    QLineEdit *idbNU2CEdit;
+    QLabel *label_116;
     QWidget *pupTab;
     QCheckBox *pupEnableCheck;
     QToolButton *pupCopyButton;
@@ -551,6 +558,9 @@ public:
         skillHowCopyButton = new QPushButton(modInfoTab);
         skillHowCopyButton->setObjectName(QStringLiteral("skillHowCopyButton"));
         skillHowCopyButton->setGeometry(QRect(500, 470, 95, 23));
+        skillBlastSsIntended = new QCheckBox(modInfoTab);
+        skillBlastSsIntended->setObjectName(QStringLiteral("skillBlastSsIntended"));
+        skillBlastSsIntended->setGeometry(QRect(20, 600, 321, 20));
         tabWidget->addTab(modInfoTab, QString());
         filesTab = new QWidget();
         filesTab->setObjectName(QStringLiteral("filesTab"));
@@ -830,13 +840,13 @@ public:
         idbTpEdit->setGeometry(QRect(120, 228, 75, 20));
         idbModelEdit = new QLineEdit(idbTab);
         idbModelEdit->setObjectName(QStringLiteral("idbModelEdit"));
-        idbModelEdit->setGeometry(QRect(300, 228, 75, 20));
+        idbModelEdit->setGeometry(QRect(480, 188, 75, 20));
         label_38 = new QLabel(idbTab);
         label_38->setObjectName(QStringLiteral("label_38"));
         label_38->setGeometry(QRect(90, 230, 31, 16));
         label_39 = new QLabel(idbTab);
         label_39->setObjectName(QStringLiteral("label_39"));
-        label_39->setGeometry(QRect(257, 230, 47, 13));
+        label_39->setGeometry(QRect(437, 190, 47, 13));
         idbU24Edit = new QLineEdit(idbTab);
         idbU24Edit->setObjectName(QStringLiteral("idbU24Edit"));
         idbU24Edit->setGeometry(QRect(120, 268, 75, 20));
@@ -882,6 +892,24 @@ public:
         label_106 = new QLabel(idbTab);
         label_106->setObjectName(QStringLiteral("label_106"));
         label_106->setGeometry(QRect(437, 230, 47, 13));
+        idbStpEdit = new QLineEdit(idbTab);
+        idbStpEdit->setObjectName(QStringLiteral("idbStpEdit"));
+        idbStpEdit->setGeometry(QRect(300, 228, 75, 20));
+        label_114 = new QLabel(idbTab);
+        label_114->setObjectName(QStringLiteral("label_114"));
+        label_114->setGeometry(QRect(270, 230, 31, 16));
+        idbNU0AEdit = new QLineEdit(idbTab);
+        idbNU0AEdit->setObjectName(QStringLiteral("idbNU0AEdit"));
+        idbNU0AEdit->setGeometry(QRect(480, 108, 75, 20));
+        label_115 = new QLabel(idbTab);
+        label_115->setObjectName(QStringLiteral("label_115"));
+        label_115->setGeometry(QRect(436, 110, 49, 16));
+        idbNU2CEdit = new QLineEdit(idbTab);
+        idbNU2CEdit->setObjectName(QStringLiteral("idbNU2CEdit"));
+        idbNU2CEdit->setGeometry(QRect(480, 148, 75, 20));
+        label_116 = new QLabel(idbTab);
+        label_116->setObjectName(QStringLiteral("label_116"));
+        label_116->setGeometry(QRect(436, 150, 49, 16));
         tabWidget->addTab(idbTab, QString());
         pupTab = new QWidget();
         pupTab->setObjectName(QStringLiteral("pupTab"));
@@ -1510,6 +1538,7 @@ public:
          << QApplication::translate("MainWindow", "Chinese (tw)", 0)
          << QApplication::translate("MainWindow", "Chinese (zh)", 0)
          << QApplication::translate("MainWindow", "Korean", 0)
+         << QApplication::translate("MainWindow", "Japanese", 0)
         );
         label_3->setText(QApplication::translate("MainWindow", "Author:", 0));
         skillNameCopyButton->setText(QApplication::translate("MainWindow", "Copy from game", 0));
@@ -1537,6 +1566,7 @@ public:
          << QApplication::translate("MainWindow", "Chinese (tw)", 0)
          << QApplication::translate("MainWindow", "Chinese (zh)", 0)
          << QApplication::translate("MainWindow", "Korean", 0)
+         << QApplication::translate("MainWindow", "Japanese", 0)
         );
         skillDescCopyButton->setText(QApplication::translate("MainWindow", "Copy from game", 0));
         label_83->setText(QApplication::translate("MainWindow", "Transformation names", 0));
@@ -1555,6 +1585,7 @@ public:
          << QApplication::translate("MainWindow", "Chinese (tw)", 0)
          << QApplication::translate("MainWindow", "Chinese (zh)", 0)
          << QApplication::translate("MainWindow", "Korean", 0)
+         << QApplication::translate("MainWindow", "Japanese", 0)
         );
         skillTransCopyButton->setText(QApplication::translate("MainWindow", "Copy from game", 0));
         skillTransAddButton->setText(QApplication::translate("MainWindow", "Add", 0));
@@ -1575,8 +1606,10 @@ public:
          << QApplication::translate("MainWindow", "Chinese (tw)", 0)
          << QApplication::translate("MainWindow", "Chinese (zh)", 0)
          << QApplication::translate("MainWindow", "Korean", 0)
+         << QApplication::translate("MainWindow", "Japanese", 0)
         );
         skillHowCopyButton->setText(QApplication::translate("MainWindow", "Copy from game", 0));
+        skillBlastSsIntended->setText(QApplication::translate("MainWindow", "This blast skill will be used by a Super Soul", 0));
         tabWidget->setTabText(tabWidget->indexOf(modInfoTab), QApplication::translate("MainWindow", "Mod info", 0));
         label_7->setText(QApplication::translate("MainWindow", "Skill files:", 0));
         label_8->setText(QApplication::translate("MainWindow", "Additional data*:", 0));
@@ -1647,6 +1680,9 @@ public:
         label_45->setText(QApplication::translate("MainWindow", "Effect 3:", 0));
         idbEnableCheck->setText(QApplication::translate("MainWindow", "Enable IDB", 0));
         label_106->setText(QApplication::translate("MainWindow", "NU_0C:", 0));
+        label_114->setText(QApplication::translate("MainWindow", "STP:", 0));
+        label_115->setText(QApplication::translate("MainWindow", "NU_0A:", 0));
+        label_116->setText(QApplication::translate("MainWindow", "NU_2C:", 0));
         tabWidget->setTabText(tabWidget->indexOf(idbTab), QApplication::translate("MainWindow", "IDB", 0));
         pupEnableCheck->setText(QApplication::translate("MainWindow", "Enable PUP", 0));
         pupCopyButton->setText(QApplication::translate("MainWindow", "Copy", 0));
