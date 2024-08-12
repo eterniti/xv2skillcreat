@@ -356,6 +356,7 @@ public:
     QLineEdit *auraBH64Edit;
     QLabel *label_111;
     QLabel *label_112;
+    QCheckBox *auraGFCheck;
     QWidget *bcsTab;
     QLabel *label_100;
     QLabel *label_101;
@@ -924,7 +925,7 @@ public:
         pupCopyButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
         label_46 = new QLabel(pupTab);
         label_46->setObjectName(QStringLiteral("label_46"));
-        label_46->setGeometry(QRect(89, 70, 47, 13));
+        label_46->setGeometry(QRect(42, 70, 91, 16));
         label_47 = new QLabel(pupTab);
         label_47->setObjectName(QStringLiteral("label_47"));
         label_47->setGeometry(QRect(50, 100, 81, 16));
@@ -1038,7 +1039,7 @@ public:
         label_70->setGeometry(QRect(310, 400, 47, 13));
         label_71 = new QLabel(pupTab);
         label_71->setObjectName(QStringLiteral("label_71"));
-        label_71->setGeometry(QRect(310, 430, 47, 13));
+        label_71->setGeometry(QRect(250, 430, 101, 16));
         pupBasicKiAtkEdit = new QLineEdit(pupTab);
         pupBasicKiAtkEdit->setObjectName(QStringLiteral("pupBasicKiAtkEdit"));
         pupBasicKiAtkEdit->setGeometry(QRect(350, 68, 90, 20));
@@ -1340,6 +1341,9 @@ public:
         label_112 = new QLabel(auraTab);
         label_112->setObjectName(QStringLiteral("label_112"));
         label_112->setGeometry(QRect(10, 680, 501, 16));
+        auraGFCheck = new QCheckBox(auraTab);
+        auraGFCheck->setObjectName(QStringLiteral("auraGFCheck"));
+        auraGFCheck->setGeometry(QRect(340, 560, 221, 20));
         tabWidget->addTab(auraTab, QString());
         bcsTab = new QWidget();
         bcsTab->setObjectName(QStringLiteral("bcsTab"));
@@ -1686,7 +1690,7 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(idbTab), QApplication::translate("MainWindow", "IDB", 0));
         pupEnableCheck->setText(QApplication::translate("MainWindow", "Enable PUP", 0));
         pupCopyButton->setText(QApplication::translate("MainWindow", "Copy", 0));
-        label_46->setText(QApplication::translate("MainWindow", "U_04:", 0));
+        label_46->setText(QApplication::translate("MainWindow", "CMN Effect ID:", 0));
         label_47->setText(QApplication::translate("MainWindow", "Super Soul 1:", 0));
         label_48->setText(QApplication::translate("MainWindow", "Super Soul 2:", 0));
         label_49->setText(QApplication::translate("MainWindow", "HEA:", 0));
@@ -1711,7 +1715,7 @@ public:
         label_68->setText(QApplication::translate("MainWindow", "Boost speed:", 0));
         label_69->setText(QApplication::translate("MainWindow", "Dash speed:", 0));
         label_70->setText(QApplication::translate("MainWindow", "F_64:", 0));
-        label_71->setText(QApplication::translate("MainWindow", "F_68:", 0));
+        label_71->setText(QApplication::translate("MainWindow", "Duration (frames):", 0));
         label_72->setText(QApplication::translate("MainWindow", "F_6C:", 0));
         label_73->setText(QApplication::translate("MainWindow", "F_70:", 0));
         label_74->setText(QApplication::translate("MainWindow", "F_74:", 0));
@@ -1768,6 +1772,7 @@ public:
         aurBpeButton->setText(QApplication::translate("MainWindow", "Set from", 0));
         label_111->setText(QApplication::translate("MainWindow", "BH64 (detransform):", 0));
         label_112->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:700;\">Note: for any bcs colors to work in namekians, make sure to set BH10 to -1.</span></p></body></html>", 0));
+        auraGFCheck->setText(QApplication::translate("MainWindow", "Golden Freezer skin behaviour", 0));
         tabWidget->setTabText(tabWidget->indexOf(auraTab), QApplication::translate("MainWindow", "Transformation", 0));
         label_100->setText(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">This tab is only for transformation skills for CACS. Ignore it otherwise.</span></p></body></html>", 0));
         label_101->setText(QApplication::translate("MainWindow", "X2M costume:", 0));

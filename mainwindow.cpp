@@ -492,6 +492,8 @@ void MainWindow::ProcessX2m()
         on_skillTypeComboBox_currentIndexChanged(4);
     }
 
+    ui->skillBlastSsIntended->setChecked(x2m->BlastSkillSsIntended());
+
     // Files tab
     if (x2m->SkillDirectoryExists())
     {
@@ -2673,6 +2675,8 @@ void MainWindow::AuraToGui(const X2mSkillAura &aura)
     ui->auraHairColorEdit->setText(QString("%1").arg((int32_t)aura.data.bcs_hair_color));
     ui->auraEyesColorEdit->setText(QString("%1").arg((int32_t)aura.data.bcs_eyes_color));
     ui->auraMoreColorsEdit->setText(Utils::StdStringToQString(aura.data.bcs_additional_colors, false));
+
+    ui->auraGFCheck->setChecked(aura.data.golden_freezer_skin_bh);
 }
 
 void MainWindow::GuiToAura(X2mSkillAura &aura)
@@ -2735,6 +2739,8 @@ void MainWindow::GuiToAura(X2mSkillAura &aura)
     aura.data.bcs_hair_color = (uint32_t) ui->auraHairColorEdit->text().toInt();
     aura.data.bcs_eyes_color = (uint32_t) ui->auraEyesColorEdit->text().toInt();
     aura.data.bcs_additional_colors = Utils::QStringToStdString(ui->auraMoreColorsEdit->text().trimmed(), false);
+
+    aura.data.golden_freezer_skin_bh = ui->auraGFCheck->isChecked();
 }
 
 void MainWindow::BodyToGui(const X2mBody &body, const QString body_xml)
@@ -2863,6 +2869,7 @@ void MainWindow::on_auraEnableCheck_clicked()
     ui->auraMoreColorsEdit->setEnabled(checked);
     ui->auraAddMoreColorButton->setEnabled(checked);
     ui->auraRemoveHairAccCombo->setEnabled(checked);
+    ui->auraGFCheck->setEnabled(checked);
 
     if (checked)
     {
@@ -3164,6 +3171,7 @@ void MainWindow::on_auraPatchCopyButton_triggered(QAction *arg1)
                 aura.data.bcs_hair_color = data->bcs_hair_color;
                 aura.data.bcs_eyes_color = data->bcs_eyes_color;
                 aura.data.bcs_additional_colors = data->bcs_additional_colors;
+                aura.data.golden_freezer_skin_bh = data->golden_freezer_skin_bh;
             }
             else
             {
@@ -3241,6 +3249,7 @@ void MainWindow::on_auraPatchCopyButton_triggered(QAction *arg1)
                 }
 
                 aura.data.bcs_additional_colors = "";
+                aura.data.golden_freezer_skin_bh = (idx == 13);
             }
         }
 
