@@ -142,6 +142,8 @@ private slots:
 
     void on_skillBlastSsIntended_clicked();
 
+    void on_actionToggle_dark_theme_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -195,6 +197,8 @@ private:
     bool OpenBcsColorDialog(BcsFile *bcs, const std::string &part_name, uint32_t current_color, uint32_t *out_color);
 
     int LinkOrEmbed(X2mFile *cost_x2m);
+
+    void ToggleDarkTheme(bool update_config);
 };
 
 #endif // MAINWINDOW_H

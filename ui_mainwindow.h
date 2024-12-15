@@ -69,6 +69,7 @@ public:
     QAction *actionFromBcsFileMore;
     QAction *actionFromCmnBpe;
     QAction *actionFromCmnBpeBO;
+    QAction *actionToggle_dark_theme;
     QWidget *centralWidget;
     QTabWidget *tabWidget;
     QWidget *modInfoTab;
@@ -375,6 +376,7 @@ public:
     QMenu *menuFile;
     QMenu *menuHelp;
     QMenu *menuTools;
+    QMenu *menuView;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -453,6 +455,8 @@ public:
         actionFromCmnBpe->setObjectName(QStringLiteral("actionFromCmnBpe"));
         actionFromCmnBpeBO = new QAction(MainWindow);
         actionFromCmnBpeBO->setObjectName(QStringLiteral("actionFromCmnBpeBO"));
+        actionToggle_dark_theme = new QAction(MainWindow);
+        actionToggle_dark_theme->setObjectName(QStringLiteral("actionToggle_dark_theme"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         tabWidget = new QTabWidget(centralWidget);
@@ -1400,6 +1404,8 @@ public:
         menuHelp->setObjectName(QStringLiteral("menuHelp"));
         menuTools = new QMenu(menuBar);
         menuTools->setObjectName(QStringLiteral("menuTools"));
+        menuView = new QMenu(menuBar);
+        menuView->setObjectName(QStringLiteral("menuView"));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -1409,6 +1415,7 @@ public:
         MainWindow->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
+        menuBar->addAction(menuView->menuAction());
         menuBar->addAction(menuTools->menuAction());
         menuBar->addAction(menuHelp->menuAction());
         menuFile->addAction(actionOpen);
@@ -1417,6 +1424,7 @@ public:
         menuFile->addAction(actionExit);
         menuHelp->addAction(actionAbout);
         menuTools->addAction(actionImportSkillDir);
+        menuView->addAction(actionToggle_dark_theme);
         mainToolBar->addAction(actionOpen);
         mainToolBar->addAction(actionSave);
 
@@ -1523,6 +1531,7 @@ public:
         actionFromBcsFileMore->setText(QApplication::translate("MainWindow", "From bcs file", 0));
         actionFromCmnBpe->setText(QApplication::translate("MainWindow", "From cmn.bpe", 0));
         actionFromCmnBpeBO->setText(QApplication::translate("MainWindow", "From cmn.bpe (only BodyOutline)", 0));
+        actionToggle_dark_theme->setText(QApplication::translate("MainWindow", "Toggle dark theme", 0));
         label_2->setText(QApplication::translate("MainWindow", "Version:", 0));
         guidButton->setText(QApplication::translate("MainWindow", "Generate new", 0));
         label->setText(QApplication::translate("MainWindow", "Name:", 0));
@@ -1796,6 +1805,7 @@ public:
         menuFile->setTitle(QApplication::translate("MainWindow", "File", 0));
         menuHelp->setTitle(QApplication::translate("MainWindow", "Help", 0));
         menuTools->setTitle(QApplication::translate("MainWindow", "Tools", 0));
+        menuView->setTitle(QApplication::translate("MainWindow", "View", 0));
     } // retranslateUi
 
 };
