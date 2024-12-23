@@ -144,6 +144,8 @@ private slots:
 
     void on_actionToggle_dark_theme_triggered();
 
+    void on_cusCharaAttachButton_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event);
 

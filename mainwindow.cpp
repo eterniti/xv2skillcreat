@@ -59,7 +59,7 @@ bool MainWindow::Initialize()
     ui->cusU36Edit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusPupEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusAuraEdit->setValidator(new QIntValidator(-32768, 32767, this));
-    ui->cusModelEdit->setValidator(new QIntValidator(-32768, 32767, this));
+    //ui->cusModelEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusChangeSSEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusNumTransEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusU44Edit->setValidator(new QIntValidator(this));
@@ -394,6 +394,13 @@ void MainWindow::on_actionImportSkillDir_triggered()
         return;
 
     std::string skill_dir = Xenoverse2::GetSkillDirectory(*skill, &temp_skill_prefix);
+    //DPRINTF("skill_dir = %s\n", skill_dir.c_str());
+    if (skill_dir.length() > 0 && !xv2fs->DirExists(skill_dir))
+    {
+        //DPRINTF("Using alternate directory.");
+        skill_dir = Xenoverse2::GetSkillDirectoryAlt(*skill, &temp_skill_prefix);
+    }
+
     if (skill_dir.length() == 0)
     {
         DPRINTF("Cannot get skill directory.\n");
@@ -522,6 +529,29 @@ void MainWindow::ProcessX2m()
     }
 
     // Cus tab
+    if (x2m->HasSkillCharaDepend())
+    {
+        QString text;
+
+        if (x2m->SkillCharaDependHasAttachment())
+        {
+            text = "X2M [EMBEDDED]";
+        }
+        else
+        {
+            text = "X2M [LINKED]";
+        }
+
+        ui->cusCharaAttachButton->setText("Remove x2m");
+        ui->cusModelEdit->setText(text);
+        ui->cusModelEdit->setEnabled(false);
+    }
+    else
+    {
+        ui->cusCharaAttachButton->setText("Set x2m");
+        ui->cusModelEdit->setEnabled(true);
+    }
+
     if (x2m->HasValidSkillEntry())
     {
         SkillToGui(x2m->GetSkillEntry());
@@ -1162,6 +1192,9 @@ bool MainWindow::Build()
     if (ui->pupEnableCheck->isChecked())
         x2m->GetSkillEntry().pup_id = 0xFFFF;
 
+    if (x2m->HasSkillCharaDepend())
+        x2m->GetSkillEntry().model = X2M_CHARA_DEPENDS_ID;
+
     // IDB
     IdbEntry &idb_entry = x2m->GetSkillIdbEntry();
 
@@ -1786,8 +1819,7 @@ void MainWindow::SkillToGui(const CusSkill &skill)
     else
         ui->cusPupEdit->setText(QString("%1").arg((int16_t)skill.pup_id));
 
-    ui->cusAuraEdit->setText(QString("%1").arg((int16_t)skill.aura));
-    ui->cusModelEdit->setText(QString("%1").arg((int16_t)skill.model));
+    ui->cusAuraEdit->setText(QString("%1").arg((int16_t)skill.aura));    
     ui->cusChangeSSEdit->setText(QString("%1").arg((int16_t)skill.change_skillset));
     ui->cusNumTransEdit->setText(QString("%1").arg((int16_t)skill.num_transforms));
     ui->cusU44Edit->setText(QString("%1").arg((int32_t)skill.unk_44));
@@ -1800,6 +1832,9 @@ void MainWindow::SkillToGui(const CusSkill &skill)
     ui->cusAcbVoxEdit->setText(Utils::StdStringToQString(skill.paths[4], false));
     ui->cusBacEdit->setText(Utils::StdStringToQString(skill.paths[5], false));
     ui->cusBcmEdit->setText(Utils::StdStringToQString(skill.paths[6], false));
+
+    if (!x2m->HasSkillCharaDepend())
+        ui->cusModelEdit->setText(QString("%1").arg((int16_t)skill.model));
 }
 
 void MainWindow::GuiToSkill(CusSkill &skill)
@@ -1844,8 +1879,7 @@ void MainWindow::GuiToSkill(CusSkill &skill)
     skill.unk_34 = (uint16_t) ui->cusU34Edit->text().toInt();
     skill.skill_type = (uint16_t) ui->cusU36Edit->text().toInt();
     skill.pup_id = (uint16_t) ui->cusPupEdit->text().toInt();
-    skill.aura = (uint16_t) ui->cusAuraEdit->text().toInt();
-    skill.model = (uint16_t) ui->cusModelEdit->text().toInt();
+    skill.aura = (uint16_t) ui->cusAuraEdit->text().toInt();    
     skill.change_skillset = (uint16_t) ui->cusChangeSSEdit->text().toInt();
     skill.num_transforms = (uint16_t) ui->cusNumTransEdit->text().toInt();
     skill.unk_44 = (uint32_t) ui->cusU44Edit->text().toInt();
@@ -1860,6 +1894,11 @@ void MainWindow::GuiToSkill(CusSkill &skill)
     skill.paths[6] = Utils::QStringToStdString(ui->cusBcmEdit->text(), false);
 
     skill.id = skill.id2 = X2M_DUMMY_ID16;
+
+    if (x2m->HasSkillCharaDepend())
+        skill.model = X2M_CHARA_DEPENDS_ID;
+    else
+        skill.model = (uint16_t) ui->cusModelEdit->text().toInt();
 }
 
 void MainWindow::on_cusCopyButton_triggered(QAction *arg1)
@@ -3339,17 +3378,18 @@ void MainWindow::on_auraGetHairColorButton_triggered(QAction *arg1)
     }
 }
 
-int MainWindow::LinkOrEmbed(X2mFile *cost_x2m)
+int MainWindow::LinkOrEmbed(X2mFile *x2m)
 {
     QMessageBox box(this);
     QPushButton *link_button;
     QPushButton *embed_button;
 
-    QString text = "Do you want to link this costume mod, or embed it?";
+    QString text = (x2m->GetType() == X2mType::NEW_COSTUME) ? "Do you want to link this costume mod, or embed it?" :
+                                                              "Do you want to link this character mod, or embed it?";
 
-    if (cost_x2m)
+    if (x2m)
     {
-        text += "\n\nMod name: " + Utils::StdStringToQString(cost_x2m->GetModName(), false);
+        text += "\n\nMod name: " + Utils::StdStringToQString(x2m->GetModName(), false);
     }
 
     box.setWindowTitle("Link or embed?");
@@ -3835,3 +3875,71 @@ void MainWindow::on_actionToggle_dark_theme_triggered()
     ToggleDarkTheme(true);
 }
 
+void MainWindow::on_cusCharaAttachButton_clicked()
+{
+    if (x2m->HasSkillCharaDepend())
+    {
+        if (x2m->SkillCharaDependHasAttachment())
+            x2m->RemoveSkillCharaDependAttachment();
+
+        x2m->RemoveSkillCharaDepend();
+
+        ui->cusCharaAttachButton->setText("Set x2m");
+        ui->cusModelEdit->setText("-1");
+        ui->cusModelEdit->setEnabled(true);
+        return;
+    }
+
+    QString file = QFileDialog::getOpenFileName(this, "Select character x2m", config.lf_depends_chara, "X2M Files (*.x2m)");
+
+    if (file.isNull())
+        return;
+
+    config.lf_depends_chara = file;
+
+    X2mFile char_x2m;
+
+    if (!char_x2m.LoadFromFile(Utils::QStringToStdString(file)))
+    {
+        DPRINTF("Failed to load x2m.\n");
+        return;
+    }
+
+    if (char_x2m.GetType() != X2mType::NEW_CHARACTER)
+    {
+        DPRINTF("That x2m is not of new character type!\n");
+        return;
+    }
+
+    int ret = LinkOrEmbed(&char_x2m);
+    if (ret == 0)
+        return;
+
+    if (!x2m->SetSkillCharaDepend(&char_x2m))
+    {
+        DPRINTF("Failed to set the character.\n");
+        return;
+    }
+
+    QString text;
+
+    if (ret > 0)
+    {
+        if (!x2m->SetSkillCharaDependAttachment(&char_x2m))
+        {
+            DPRINTF("Failed to embed the character.\n");
+            on_cusCharaAttachButton_clicked(); // Toggle
+            return;
+        }
+
+        text = "X2M [EMBEDDED]";
+    }
+    else
+    {
+        text = "X2M [LINKED]";
+    }
+
+    ui->cusCharaAttachButton->setText("Remove x2m");
+    ui->cusModelEdit->setText(text);
+    ui->cusModelEdit->setEnabled(false);
+}

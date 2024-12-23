@@ -171,6 +171,7 @@ public:
     QLabel *label_107;
     QLineEdit *cusU48Edit;
     QLabel *label_108;
+    QPushButton *cusCharaAttachButton;
     QWidget *idbTab;
     QLabel *label_20;
     QCheckBox *idbHumCheck;
@@ -726,7 +727,7 @@ public:
         cusAuraEdit->setGeometry(QRect(405, 341, 75, 20));
         cusModelEdit = new QLineEdit(cusTab);
         cusModelEdit->setObjectName(QStringLiteral("cusModelEdit"));
-        cusModelEdit->setGeometry(QRect(405, 381, 75, 20));
+        cusModelEdit->setGeometry(QRect(405, 381, 110, 20));
         label_30 = new QLabel(cusTab);
         label_30->setObjectName(QStringLiteral("label_30"));
         label_30->setGeometry(QRect(323, 423, 81, 16));
@@ -768,6 +769,9 @@ public:
         label_108 = new QLabel(cusTab);
         label_108->setObjectName(QStringLiteral("label_108"));
         label_108->setGeometry(QRect(360, 503, 47, 16));
+        cusCharaAttachButton = new QPushButton(cusTab);
+        cusCharaAttachButton->setObjectName(QStringLiteral("cusCharaAttachButton"));
+        cusCharaAttachButton->setGeometry(QRect(535, 380, 75, 24));
         tabWidget->addTab(cusTab, QString());
         idbTab = new QWidget();
         idbTab->setObjectName(QStringLiteral("idbTab"));
@@ -1663,6 +1667,7 @@ public:
         cusModelButton->setText(QApplication::translate("MainWindow", "Model:", 0));
         label_107->setText(QApplication::translate("MainWindow", "U_44:", 0));
         label_108->setText(QApplication::translate("MainWindow", "U_48:", 0));
+        cusCharaAttachButton->setText(QApplication::translate("MainWindow", "Set x2m", 0));
         tabWidget->setTabText(tabWidget->indexOf(cusTab), QApplication::translate("MainWindow", "CUS", 0));
         label_20->setText(QApplication::translate("MainWindow", "Stars:", 0));
         idbHumCheck->setText(QApplication::translate("MainWindow", "HUM", 0));

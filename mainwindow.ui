@@ -1322,7 +1322,7 @@
        <rect>
         <x>405</x>
         <y>381</y>
-        <width>75</width>
+        <width>110</width>
         <height>20</height>
        </rect>
       </property>
@@ -1484,6 +1484,19 @@
       </property>
       <property name="text">
        <string>U_48:</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="cusCharaAttachButton">
+      <property name="geometry">
+       <rect>
+        <x>535</x>
+        <y>380</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Set x2m</string>
       </property>
      </widget>
     </widget>
