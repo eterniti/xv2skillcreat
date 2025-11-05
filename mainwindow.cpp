@@ -52,7 +52,10 @@ bool MainWindow::Initialize()
     ui->cusTypeEdit->setValidator(new QIntValidator(0, 255, this));
     ui->cusU0EEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusPartsetEdit->setValidator(new QIntValidator(-32768, 32767, this));
+    ui->cusPartset2Edit->setValidator(new QIntValidator(-32768, 32767, this));
+    ui->cusPartset3Edit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusU12Edit->setValidator(new QIntValidator(-32768, 32767, this));
+    ui->cusNU12Edit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusU30Edit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusU32Edit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusU34Edit->setValidator(new QIntValidator(-32768, 32767, this));
@@ -60,10 +63,14 @@ bool MainWindow::Initialize()
     ui->cusPupEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusAuraEdit->setValidator(new QIntValidator(-32768, 32767, this));
     //ui->cusModelEdit->setValidator(new QIntValidator(-32768, 32767, this));
+    ui->cusModel2Edit->setValidator(new QIntValidator(-32768, 32767, this));
+    ui->cusModel3Edit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusChangeSSEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusNumTransEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusU44Edit->setValidator(new QIntValidator(this));
     ui->cusU48Edit->setValidator(new QIntValidator(this));
+    ui->cusNU4EEdit->setValidator(new QIntValidator(-32768, 32767, this));
+    ui->cusU50Edit->setValidator(new QIntValidator(this));
     ui->cusCopyButton->addAction(ui->actionFromGameCus);
     ui->cusCopyButton->addAction(ui->actionFromExternalCus);
     ui->cusAcbVoxButton->setStyleSheet("font-weight: bold;");
@@ -138,6 +145,7 @@ bool MainWindow::Initialize()
     ui->auraEf6Edit->setValidator(new QIntValidator(this));
     ui->auraBpeEdit->setValidator(new QIntValidator(this));
     ui->auraBH11Edit->setValidator(new QIntValidator(-1, BEHAVIOUR_MAX, this));
+    ui->auraAutoInt2Check->setChecked(true);
     ui->auraInt2Edit->setValidator(new QIntValidator(this));
     ui->auraBH10Edit->setValidator(new QIntValidator(-1, BEHAVIOUR_MAX, this));
     ui->auraInt3Edit->setValidator(new QIntValidator(this));
@@ -153,6 +161,7 @@ bool MainWindow::Initialize()
     ui->auraPatchCopyButton->addAction(ui->actionFromAuraPatchSkillUsage);
     ui->aurBpeButton->addAction(ui->actionFromCmnBpeBO);
     ui->aurBpeButton->addAction(ui->actionFromCmnBpe);
+    ui->auraKiReqEdit->setValidator(new QIntValidator(this));
     //
     ui->auraGetHairColorButton->addAction(ui->actionFromHumBcs);
     ui->auraGetHairColorButton->addAction(ui->actionFromHufBcs);
@@ -822,9 +831,27 @@ bool MainWindow::Validate()
         return false;
     }
 
+    if (ui->cusPartset2Edit->text().isEmpty())
+    {
+        DPRINTF("[CUS] Partset (M2) cannot be empty.\n");
+        return false;
+    }
+
+    if (ui->cusPartset3Edit->text().isEmpty())
+    {
+        DPRINTF("[CUS] Partset (M3) cannot be empty.\n");
+        return false;
+    }
+
     if (ui->cusU12Edit->text().isEmpty())
     {
         DPRINTF("[CUS] U_12 cannot be empty.\n");
+        return false;
+    }
+
+    if (ui->cusNU12Edit->text().isEmpty())
+    {
+        DPRINTF("[CUS] NU_12 cannot be empty.\n");
         return false;
     }
 
@@ -870,6 +897,18 @@ bool MainWindow::Validate()
         return false;
     }
 
+    if (ui->cusModel2Edit->text().isEmpty())
+    {
+        DPRINTF("[CUS] Model2 cannot be empty.\n");
+        return false;
+    }
+
+    if (ui->cusModel3Edit->text().isEmpty())
+    {
+        DPRINTF("[CUS] Model3 cannot be empty.\n");
+        return false;
+    }
+
     if (ui->cusChangeSSEdit->text().isEmpty())
     {
         DPRINTF("[CUS] Change Skillset cannot be empty.\n");
@@ -891,6 +930,18 @@ bool MainWindow::Validate()
     if (ui->cusU48Edit->text().isEmpty())
     {
         DPRINTF("[CUS] U_48 cannot be empty.\n");
+        return false;
+    }
+
+    if (ui->cusNU4EEdit->text().isEmpty())
+    {
+        DPRINTF("[CUS] NU_4E cannot be empty.\n");
+        return false;
+    }
+
+    if (ui->cusU50Edit->text().isEmpty())
+    {
+        DPRINTF("[CUS] U_50 cannot be empty.\n");
         return false;
     }
 
@@ -1808,7 +1859,10 @@ void MainWindow::SkillToGui(const CusSkill &skill)
     ui->cusTypeEdit->setText(QString("%1").arg(skill.type));
     ui->cusU0EEdit->setText(QString("%1").arg((int16_t)skill.unk_0E));
     ui->cusPartsetEdit->setText(QString("%1").arg((int16_t)skill.partset));
-    ui->cusU12Edit->setText(QString("%1").arg((int16_t)skill.unk_12));
+    ui->cusPartset2Edit->setText(QString("%1").arg((int16_t)skill.partset2));
+    ui->cusPartset3Edit->setText(QString("%1").arg((int16_t)skill.partset3));
+    ui->cusU12Edit->setText(QString("%1").arg((int16_t)skill.old_unk_12));
+    ui->cusNU12Edit->setText(QString("%1").arg((int16_t)skill.new_unk_12));
     ui->cusU30Edit->setText(QString("%1").arg((int16_t)skill.unk_30));
     ui->cusU32Edit->setText(QString("%1").arg((int16_t)skill.unk_32));
     ui->cusU34Edit->setText(QString("%1").arg((int16_t)skill.unk_34));
@@ -1822,8 +1876,10 @@ void MainWindow::SkillToGui(const CusSkill &skill)
     ui->cusAuraEdit->setText(QString("%1").arg((int16_t)skill.aura));    
     ui->cusChangeSSEdit->setText(QString("%1").arg((int16_t)skill.change_skillset));
     ui->cusNumTransEdit->setText(QString("%1").arg((int16_t)skill.num_transforms));
-    ui->cusU44Edit->setText(QString("%1").arg((int32_t)skill.unk_44));
-    ui->cusU48Edit->setText(QString("%1").arg((int32_t)skill.unk_48));
+    ui->cusU44Edit->setText(QString("%1").arg((int32_t)skill.old_unk_44));
+    ui->cusU48Edit->setText(QString("%1").arg((int32_t)skill.old_unk_48));
+    ui->cusNU4EEdit->setText(QString("%1").arg((int16_t)skill.new_unk_4E));
+    ui->cusU50Edit->setText(QString("%1").arg((int32_t)skill.unk_50));
 
     ui->cusEanEdit->setText(Utils::StdStringToQString(skill.paths[0], false));
     ui->cusCamEanEdit->setText(Utils::StdStringToQString(skill.paths[1], false));
@@ -1835,6 +1891,9 @@ void MainWindow::SkillToGui(const CusSkill &skill)
 
     if (!x2m->HasSkillCharaDepend())
         ui->cusModelEdit->setText(QString("%1").arg((int16_t)skill.model));
+
+    ui->cusModel2Edit->setText(QString("%1").arg((int16_t)skill.model2));
+    ui->cusModel3Edit->setText(QString("%1").arg((int16_t)skill.model3));
 }
 
 void MainWindow::GuiToSkill(CusSkill &skill)
@@ -1873,7 +1932,10 @@ void MainWindow::GuiToSkill(CusSkill &skill)
     skill.type = (uint8_t) ui->cusTypeEdit->text().toUInt();
     skill.unk_0E = (uint16_t) ui->cusU0EEdit->text().toInt();
     skill.partset = (uint16_t) ui->cusPartsetEdit->text().toInt();
-    skill.unk_12 = (uint16_t) ui->cusU12Edit->text().toInt();
+    skill.partset2 = (uint16_t) ui->cusPartset2Edit->text().toInt();
+    skill.partset3 = (uint16_t) ui->cusPartset3Edit->text().toInt();
+    skill.old_unk_12 = (uint16_t) ui->cusU12Edit->text().toInt();
+    skill.new_unk_12 = (uint16_t) ui->cusNU12Edit->text().toInt();
     skill.unk_30 = (uint16_t) ui->cusU30Edit->text().toInt();
     skill.unk_32 = (uint16_t) ui->cusU32Edit->text().toInt();
     skill.unk_34 = (uint16_t) ui->cusU34Edit->text().toInt();
@@ -1882,8 +1944,10 @@ void MainWindow::GuiToSkill(CusSkill &skill)
     skill.aura = (uint16_t) ui->cusAuraEdit->text().toInt();    
     skill.change_skillset = (uint16_t) ui->cusChangeSSEdit->text().toInt();
     skill.num_transforms = (uint16_t) ui->cusNumTransEdit->text().toInt();
-    skill.unk_44 = (uint32_t) ui->cusU44Edit->text().toInt();
-    skill.unk_48 = (uint32_t) ui->cusU48Edit->text().toInt();
+    skill.old_unk_44 = (uint32_t) ui->cusU44Edit->text().toInt();
+    skill.old_unk_48 = (uint32_t) ui->cusU48Edit->text().toInt();
+    skill.new_unk_4E = (uint16_t) ui->cusNU4EEdit->text().toInt();
+    skill.unk_50 = (uint32_t) ui->cusU50Edit->text().toInt();
 
     skill.paths[0] = Utils::QStringToStdString(ui->cusEanEdit->text(), false);
     skill.paths[1] = Utils::QStringToStdString(ui->cusCamEanEdit->text(), false);
@@ -1899,6 +1963,9 @@ void MainWindow::GuiToSkill(CusSkill &skill)
         skill.model = X2M_CHARA_DEPENDS_ID;
     else
         skill.model = (uint16_t) ui->cusModelEdit->text().toInt();
+
+    skill.model2 = (uint16_t) ui->cusModel2Edit->text().toInt();
+    skill.model3 = (uint16_t) ui->cusModel3Edit->text().toInt();
 }
 
 void MainWindow::on_cusCopyButton_triggered(QAction *arg1)
@@ -2694,6 +2761,7 @@ void MainWindow::AuraToGui(const X2mSkillAura &aura)
     ui->auraBpeFlag2Check->setChecked(aura.extra.flag2);
 
     ui->auraBH11Edit->setText(QString("%1").arg((int8_t)aura.data.behaviour_11));
+    ui->auraAutoInt2Check->setChecked(x2m->IsAutoInt2());
     ui->auraInt2Edit->setText(QString("%1").arg((int32_t)aura.data.integer_2));
     ui->auraBH10Edit->setText(QString("%1").arg((int8_t)aura.data.behaviour_10));
     ui->auraInt3Edit->setText(QString("%1").arg((int32_t)aura.data.integer_3));
@@ -2720,6 +2788,8 @@ void MainWindow::AuraToGui(const X2mSkillAura &aura)
     ui->auraMoreColorsEdit->setText(Utils::StdStringToQString(aura.data.bcs_additional_colors, false));
 
     ui->auraGFCheck->setChecked(aura.data.golden_freezer_skin_bh);
+
+    ui->auraKiReqEdit->setText(QString("%1").arg((int32_t)aura.data.ki_requirement));
 }
 
 void MainWindow::GuiToAura(X2mSkillAura &aura)
@@ -2759,6 +2829,7 @@ void MainWindow::GuiToAura(X2mSkillAura &aura)
     aura.extra.flag2 = ui->auraBpeFlag2Check->isChecked();
 
     aura.data.behaviour_11 = (uint8_t) ui->auraBH11Edit->text().toInt();
+    x2m->SetAutoInt2(ui->auraAutoInt2Check->isChecked());
     aura.data.integer_2 = (uint32_t) ui->auraInt2Edit->text().toInt();
     aura.data.behaviour_10 = (uint8_t) ui->auraBH10Edit->text().toInt();
     aura.data.integer_3 = (uint32_t) ui->auraInt3Edit->text().toInt();
@@ -2784,6 +2855,8 @@ void MainWindow::GuiToAura(X2mSkillAura &aura)
     aura.data.bcs_additional_colors = Utils::QStringToStdString(ui->auraMoreColorsEdit->text().trimmed(), false);
 
     aura.data.golden_freezer_skin_bh = ui->auraGFCheck->isChecked();
+
+    aura.data.ki_requirement = ui->auraKiReqEdit->text().toInt();
 }
 
 void MainWindow::BodyToGui(const X2mBody &body, const QString body_xml)
@@ -2898,7 +2971,8 @@ void MainWindow::on_auraEnableCheck_clicked()
     ui->auraBpeFlag1Check->setEnabled(checked && checked_custom);
     ui->auraBpeFlag2Check->setEnabled(checked && checked_custom);
     ui->auraBH11Edit->setEnabled(checked);
-    ui->auraInt2Edit->setEnabled(checked);
+    ui->auraAutoInt2Check->setEnabled(checked);
+    ui->auraInt2Edit->setEnabled(checked && !ui->auraAutoInt2Check->isChecked());
     ui->auraBH10Edit->setEnabled(checked);
     ui->auraInt3Edit->setEnabled(checked);
     ui->auraTeleportCheck->setEnabled(checked);
@@ -2913,6 +2987,7 @@ void MainWindow::on_auraEnableCheck_clicked()
     ui->auraAddMoreColorButton->setEnabled(checked);
     ui->auraRemoveHairAccCombo->setEnabled(checked);
     ui->auraGFCheck->setEnabled(checked);
+    ui->auraKiReqEdit->setEnabled(checked);
 
     if (checked)
     {
@@ -3943,3 +4018,10 @@ void MainWindow::on_cusCharaAttachButton_clicked()
     ui->cusModelEdit->setText(text);
     ui->cusModelEdit->setEnabled(false);
 }
+
+
+void MainWindow::on_auraAutoInt2Check_clicked()
+{
+    x2m->SetAutoInt2(ui->auraAutoInt2Check->isChecked());
+}
+

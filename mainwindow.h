@@ -146,6 +146,8 @@ private slots:
 
     void on_cusCharaAttachButton_clicked();
 
+    void on_auraAutoInt2Check_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event);
 
