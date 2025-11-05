@@ -66,11 +66,12 @@ bool MainWindow::Initialize()
     ui->cusModel2Edit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusModel3Edit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusChangeSSEdit->setValidator(new QIntValidator(-32768, 32767, this));
+    ui->cusChangeSS2Edit->setValidator(new QIntValidator(-32768, 32767, this));
+    ui->cusChangeSS3Edit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusNumTransEdit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusU44Edit->setValidator(new QIntValidator(this));
     ui->cusU48Edit->setValidator(new QIntValidator(this));
-    ui->cusNU4EEdit->setValidator(new QIntValidator(-32768, 32767, this));
-    ui->cusU50Edit->setValidator(new QIntValidator(this));
+    ui->cusU52Edit->setValidator(new QIntValidator(-32768, 32767, this));
     ui->cusCopyButton->addAction(ui->actionFromGameCus);
     ui->cusCopyButton->addAction(ui->actionFromExternalCus);
     ui->cusAcbVoxButton->setStyleSheet("font-weight: bold;");
@@ -911,7 +912,19 @@ bool MainWindow::Validate()
 
     if (ui->cusChangeSSEdit->text().isEmpty())
     {
-        DPRINTF("[CUS] Change Skillset cannot be empty.\n");
+        DPRINTF("[CUS] Skillset cannot be empty.\n");
+        return false;
+    }
+
+    if (ui->cusChangeSS2Edit->text().isEmpty())
+    {
+        DPRINTF("[CUS] Skillset 2 cannot be empty.\n");
+        return false;
+    }
+
+    if (ui->cusChangeSS3Edit->text().isEmpty())
+    {
+        DPRINTF("[CUS] Skillset 3 cannot be empty.\n");
         return false;
     }
 
@@ -933,15 +946,9 @@ bool MainWindow::Validate()
         return false;
     }
 
-    if (ui->cusNU4EEdit->text().isEmpty())
+    if (ui->cusU52Edit->text().isEmpty())
     {
-        DPRINTF("[CUS] NU_4E cannot be empty.\n");
-        return false;
-    }
-
-    if (ui->cusU50Edit->text().isEmpty())
-    {
-        DPRINTF("[CUS] U_50 cannot be empty.\n");
+        DPRINTF("[CUS] U_52 cannot be empty.\n");
         return false;
     }
 
@@ -1875,11 +1882,12 @@ void MainWindow::SkillToGui(const CusSkill &skill)
 
     ui->cusAuraEdit->setText(QString("%1").arg((int16_t)skill.aura));    
     ui->cusChangeSSEdit->setText(QString("%1").arg((int16_t)skill.change_skillset));
+    ui->cusChangeSS2Edit->setText(QString("%1").arg((int16_t)skill.change_skillset2));
+    ui->cusChangeSS3Edit->setText(QString("%1").arg((int16_t)skill.change_skillset3));
     ui->cusNumTransEdit->setText(QString("%1").arg((int16_t)skill.num_transforms));
     ui->cusU44Edit->setText(QString("%1").arg((int32_t)skill.old_unk_44));
     ui->cusU48Edit->setText(QString("%1").arg((int32_t)skill.old_unk_48));
-    ui->cusNU4EEdit->setText(QString("%1").arg((int16_t)skill.new_unk_4E));
-    ui->cusU50Edit->setText(QString("%1").arg((int32_t)skill.unk_50));
+    ui->cusU52Edit->setText(QString("%1").arg((int16_t)skill.unk_52));
 
     ui->cusEanEdit->setText(Utils::StdStringToQString(skill.paths[0], false));
     ui->cusCamEanEdit->setText(Utils::StdStringToQString(skill.paths[1], false));
@@ -1943,11 +1951,12 @@ void MainWindow::GuiToSkill(CusSkill &skill)
     skill.pup_id = (uint16_t) ui->cusPupEdit->text().toInt();
     skill.aura = (uint16_t) ui->cusAuraEdit->text().toInt();    
     skill.change_skillset = (uint16_t) ui->cusChangeSSEdit->text().toInt();
+    skill.change_skillset2 = (uint16_t) ui->cusChangeSS2Edit->text().toInt();
+    skill.change_skillset3 = (uint16_t) ui->cusChangeSS3Edit->text().toInt();
     skill.num_transforms = (uint16_t) ui->cusNumTransEdit->text().toInt();
     skill.old_unk_44 = (uint32_t) ui->cusU44Edit->text().toInt();
     skill.old_unk_48 = (uint32_t) ui->cusU48Edit->text().toInt();
-    skill.new_unk_4E = (uint16_t) ui->cusNU4EEdit->text().toInt();
-    skill.unk_50 = (uint32_t) ui->cusU50Edit->text().toInt();
+    skill.unk_52 = (uint16_t) ui->cusU52Edit->text().toInt();
 
     skill.paths[0] = Utils::QStringToStdString(ui->cusEanEdit->text(), false);
     skill.paths[1] = Utils::QStringToStdString(ui->cusCamEanEdit->text(), false);
