@@ -3321,18 +3321,18 @@ void MainWindow::on_auraPatchCopyButton_triggered(QAction *arg1)
                     aura.data.behaviour_64 = idx;
                 }
 
-                if (idx == 1 || idx == 5 || idx == 21 || idx == 23)
+                if (idx == 1 || idx == 5 || idx == 21 || idx == 23 || idx == 40)
                     aura.data.integer_2 = 1;
-                else if (idx == 2 || idx == 3 || idx == 6)
+                else if (idx == 2 || idx == 3 || idx == 6 || idx == 41)
                     aura.data.integer_2 = 2;
                 else
                     aura.data.integer_2 = 0;
 
-                if (idx == 0 || (idx >= 11 && idx <= 19))
+                if (idx == 0 || (idx >= 11 && idx <= 19) || idx == 27 || (idx >= 30 && idx <= 35) || idx == 38)
                     aura.data.integer_3 = 1;
-                else if (idx == 1 || idx == 7 || idx == 8 || idx == 9)
+                else if (idx == 1 || idx == 7 || idx == 8 || idx == 9 || idx == 36)
                     aura.data.integer_3 = 2;
-                else if (idx == 2 || idx == 3)
+                else if (idx == 2 || idx == 3 || idx == 37)
                     aura.data.integer_3 = 3;
                 else
                     aura.data.integer_3 = 0;
