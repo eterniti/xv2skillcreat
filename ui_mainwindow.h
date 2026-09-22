@@ -188,6 +188,8 @@ public:
     QLabel *label_126;
     QLineEdit *cusChangeSS3Edit;
     QLabel *label_127;
+    QPushButton *cusCharaAttach2Button;
+    QPushButton *cusCharaAttach3Button;
     QWidget *idbTab;
     QLabel *label_20;
     QCheckBox *idbHumCheck;
@@ -841,6 +843,12 @@ public:
         label_127 = new QLabel(cusTab);
         label_127->setObjectName(QStringLiteral("label_127"));
         label_127->setGeometry(QRect(432, 623, 75, 16));
+        cusCharaAttach2Button = new QPushButton(cusTab);
+        cusCharaAttach2Button->setObjectName(QStringLiteral("cusCharaAttach2Button"));
+        cusCharaAttach2Button->setGeometry(QRect(300, 700, 75, 24));
+        cusCharaAttach3Button = new QPushButton(cusTab);
+        cusCharaAttach3Button->setObjectName(QStringLiteral("cusCharaAttach3Button"));
+        cusCharaAttach3Button->setGeometry(QRect(300, 740, 75, 24));
         tabWidget->addTab(cusTab, QString());
         idbTab = new QWidget();
         idbTab->setObjectName(QStringLiteral("idbTab"));
@@ -1749,7 +1757,7 @@ public:
         cusCopyButton->setText(QApplication::translate("MainWindow", "Copy", 0));
         cusAcbSeButton->setText(QApplication::translate("MainWindow", "acb (SE):", 0));
         cusAcbVoxButton->setText(QApplication::translate("MainWindow", "acb (VOX):", 0));
-        cusModelButton->setText(QApplication::translate("MainWindow", "Model:", 0));
+        cusModelButton->setText(QApplication::translate("MainWindow", "Model1:", 0));
         label_107->setText(QApplication::translate("MainWindow", "U_44:", 0));
         label_108->setText(QApplication::translate("MainWindow", "U_48:", 0));
         cusCharaAttachButton->setText(QApplication::translate("MainWindow", "Set x2m", 0));
@@ -1761,6 +1769,8 @@ public:
         label_125->setText(QApplication::translate("MainWindow", "Model2:", 0));
         label_126->setText(QApplication::translate("MainWindow", "Model3:", 0));
         label_127->setText(QApplication::translate("MainWindow", "Skillset (M3):", 0));
+        cusCharaAttach2Button->setText(QApplication::translate("MainWindow", "Set x2m", 0));
+        cusCharaAttach3Button->setText(QApplication::translate("MainWindow", "Set x2m", 0));
         tabWidget->setTabText(tabWidget->indexOf(cusTab), QApplication::translate("MainWindow", "CUS", 0));
         label_20->setText(QApplication::translate("MainWindow", "Stars:", 0));
         idbHumCheck->setText(QApplication::translate("MainWindow", "HUM", 0));

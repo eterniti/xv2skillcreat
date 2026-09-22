@@ -539,11 +539,11 @@ void MainWindow::ProcessX2m()
     }
 
     // Cus tab
-    if (x2m->HasSkillCharaDepend())
+    if (x2m->NumSkillCharaDepends() >= 1)
     {
         QString text;
 
-        if (x2m->SkillCharaDependHasAttachment())
+        if (x2m->SkillCharaDependHasAttachment(0))
         {
             text = "X2M [EMBEDDED]";
         }
@@ -560,6 +560,52 @@ void MainWindow::ProcessX2m()
     {
         ui->cusCharaAttachButton->setText("Set x2m");
         ui->cusModelEdit->setEnabled(true);
+    }
+
+    if (x2m->NumSkillCharaDepends() >= 2)
+    {
+        QString text;
+
+        if (x2m->SkillCharaDependHasAttachment(1))
+        {
+            text = "X2M [EMBEDDED]";
+        }
+        else
+        {
+            text = "X2M [LINKED]";
+        }
+
+        ui->cusCharaAttach2Button->setText("Remove x2m");
+        ui->cusModel2Edit->setText(text);
+        ui->cusModel2Edit->setEnabled(false);
+    }
+    else
+    {
+        ui->cusCharaAttach2Button->setText("Set x2m");
+        ui->cusModel2Edit->setEnabled(true);
+    }
+
+    if (x2m->NumSkillCharaDepends() >= 3)
+    {
+        QString text;
+
+        if (x2m->SkillCharaDependHasAttachment(2))
+        {
+            text = "X2M [EMBEDDED]";
+        }
+        else
+        {
+            text = "X2M [LINKED]";
+        }
+
+        ui->cusCharaAttach3Button->setText("Remove x2m");
+        ui->cusModel3Edit->setText(text);
+        ui->cusModel3Edit->setEnabled(false);
+    }
+    else
+    {
+        ui->cusCharaAttach3Button->setText("Set x2m");
+        ui->cusModel3Edit->setEnabled(true);
     }
 
     if (x2m->HasValidSkillEntry())
@@ -3959,78 +4005,163 @@ void MainWindow::on_actionToggle_dark_theme_triggered()
     ToggleDarkTheme(true);
 }
 
-void MainWindow::on_cusCharaAttachButton_clicked()
+void MainWindow::on_cusCharaAttachButton_clicked_common(size_t idx)
 {
-    if (x2m->HasSkillCharaDepend())
+    QPushButton *button;
+    QLineEdit *edit;
+
+    if (idx == 0)
     {
-        if (x2m->SkillCharaDependHasAttachment())
-            x2m->RemoveSkillCharaDependAttachment();
-
-        x2m->RemoveSkillCharaDepend();
-
-        ui->cusCharaAttachButton->setText("Set x2m");
-        ui->cusModelEdit->setText("-1");
-        ui->cusModelEdit->setEnabled(true);
-        return;
+        button = ui->cusCharaAttachButton;
+        edit = ui->cusModelEdit;
     }
-
-    QString file = QFileDialog::getOpenFileName(this, "Select character x2m", config.lf_depends_chara, "X2M Files (*.x2m)");
-
-    if (file.isNull())
-        return;
-
-    config.lf_depends_chara = file;
-
-    X2mFile char_x2m;
-
-    if (!char_x2m.LoadFromFile(Utils::QStringToStdString(file)))
+    else if (idx == 1)
     {
-        DPRINTF("Failed to load x2m.\n");
-        return;
-    }
-
-    if (char_x2m.GetType() != X2mType::NEW_CHARACTER)
-    {
-        DPRINTF("That x2m is not of new character type!\n");
-        return;
-    }
-
-    int ret = LinkOrEmbed(&char_x2m);
-    if (ret == 0)
-        return;
-
-    if (!x2m->SetSkillCharaDepend(&char_x2m))
-    {
-        DPRINTF("Failed to set the character.\n");
-        return;
-    }
-
-    QString text;
-
-    if (ret > 0)
-    {
-        if (!x2m->SetSkillCharaDependAttachment(&char_x2m))
-        {
-            DPRINTF("Failed to embed the character.\n");
-            on_cusCharaAttachButton_clicked(); // Toggle
-            return;
-        }
-
-        text = "X2M [EMBEDDED]";
+        button = ui->cusCharaAttach2Button;
+        edit = ui->cusModel2Edit;
     }
     else
     {
-        text = "X2M [LINKED]";
+        button = ui->cusCharaAttach3Button;
+        edit = ui->cusModel3Edit;
     }
 
-    ui->cusCharaAttachButton->setText("Remove x2m");
-    ui->cusModelEdit->setText(text);
-    ui->cusModelEdit->setEnabled(false);
+    size_t num = x2m->NumSkillCharaDepends();
+    bool isActionRemove = (button->text().indexOf("Remove") >= 0); // Not very elegant...
+
+    if (!isActionRemove)
+    {
+        if (idx == 1 && num == 0)
+        {
+            DPRINTF("You must first set the x2m of model 1 before setting x2m of model 2.");
+            return;
+        }
+
+        if (idx == 2 && num == 0)
+        {
+            DPRINTF("You must first set the x2m of model 1 and model 2 before setting x2m of model 3.");
+            return;
+        }
+
+        if (idx == 2 && num == 1)
+        {
+            DPRINTF("You must first set the x2m of model 2 before setting x2m of model 3.");
+            return;
+        }
+
+        if (idx == num)
+        {
+            x2m->AddSkillCharaDependDummy();
+        }
+        else
+        {
+            DPRINTF("%s: Unknown gui error. Idx = %Id, num = %Id\n", FUNCNAME, idx, num);
+            return;
+        }
+
+        QString file = QFileDialog::getOpenFileName(this, "Select character x2m", config.lf_depends_chara, "X2M Files (*.x2m)");
+
+        if (file.isNull())
+            return;
+
+        config.lf_depends_chara = file;
+
+        X2mFile char_x2m;
+
+        if (!char_x2m.LoadFromFile(Utils::QStringToStdString(file)))
+        {
+            DPRINTF("Failed to load x2m.\n");
+            return;
+        }
+
+        if (char_x2m.GetType() != X2mType::NEW_CHARACTER)
+        {
+            DPRINTF("That x2m is not of new character type!\n");
+            return;
+        }
+
+        int ret = LinkOrEmbed(&char_x2m);
+        if (ret == 0)
+            return;
+
+        if (!x2m->SetSkillCharaDepend(&char_x2m, idx))
+        {
+            DPRINTF("Failed to set the character (idx=%Id)\n", idx);
+            return;
+        }
+
+        QString text;
+
+        if (ret > 0)
+        {
+            if (!x2m->SetSkillCharaDependAttachment(&char_x2m, idx))
+            {
+                DPRINTF("Failed to embed the character.\n");
+                on_cusCharaAttachButton_clicked_common(idx); // Toggle
+                return;
+            }
+
+            text = "X2M [EMBEDDED]";
+        }
+        else
+        {
+            text = "X2M [LINKED]";
+        }
+
+        button->setText("Remove x2m");
+        edit->setText(text);
+        edit->setEnabled(false);
+    }
+    else
+    {
+       if (num == 0) // ?
+           return;
+
+       if (idx == 0 && num == 2)
+       {
+           DPRINTF("You must first remove x2m of model 2 before removing the x2m of model 1.");
+           return;
+       }
+
+       if (idx == 0 && num == 3)
+       {
+           DPRINTF("You must first remove x2m of model 3 and model 2 before removing the x2m of model 1.");
+           return;
+       }
+
+       if (idx == 1 && num == 3)
+       {
+           DPRINTF("You must first remove x2m of model 3 before removing the x2m of model 2.");
+           return;
+       }
+
+       if (x2m->SkillCharaDependHasAttachment(idx))
+           x2m->RemoveSkillCharaDependAttachment(idx);
+
+       x2m->RemoveSkillCharaDepend(idx);
+
+       button->setText("Set x2m");
+       edit->setText("-1");
+       edit->setEnabled(true);
+    }
 }
 
+void MainWindow::on_cusCharaAttachButton_clicked()
+{
+    on_cusCharaAttachButton_clicked_common(0);
+}
+
+void MainWindow::on_cusCharaAttach2Button_clicked()
+{
+    on_cusCharaAttachButton_clicked_common(1);
+}
+
+void MainWindow::on_cusCharaAttach3Button_clicked()
+{
+    on_cusCharaAttachButton_clicked_common(2);
+}
 
 void MainWindow::on_auraAutoInt2Check_clicked()
 {
     x2m->SetAutoInt2(ui->auraAutoInt2Check->isChecked());
 }
-

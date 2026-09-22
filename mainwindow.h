@@ -148,6 +148,10 @@ private slots:
 
     void on_auraAutoInt2Check_clicked();
 
+    void on_cusCharaAttach2Button_clicked();
+
+    void on_cusCharaAttach3Button_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event);
 
@@ -203,6 +207,8 @@ private:
     int LinkOrEmbed(X2mFile *cost_x2m);
 
     void ToggleDarkTheme(bool update_config);
+
+    void on_cusCharaAttachButton_clicked_common(size_t idx);
 };
 
 #endif // MAINWINDOW_H

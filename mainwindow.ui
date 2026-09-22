@@ -1434,7 +1434,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>Model:</string>
+       <string>Model1:</string>
       </property>
       <property name="flat">
        <bool>true</bool>
@@ -1681,6 +1681,32 @@
       </property>
       <property name="text">
        <string>Skillset (M3):</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="cusCharaAttach2Button">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>700</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Set x2m</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="cusCharaAttach3Button">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>740</y>
+        <width>75</width>
+        <height>24</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Set x2m</string>
       </property>
      </widget>
     </widget>
