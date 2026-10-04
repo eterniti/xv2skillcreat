@@ -208,6 +208,7 @@ private:
 
     void ToggleDarkTheme(bool update_config);
 
+    void UpdateModels(bool setMinus1);
     void on_cusCharaAttachButton_clicked_common(size_t idx);
 };
 

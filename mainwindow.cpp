@@ -25,6 +25,10 @@
 
 #define BODY_ID_TEXT    "Id to use in BAC: "
 
+#define MODEL_STATE "MODEL_STATE"
+#define MODEL_STATE_SET    101
+#define MODEL_STATE_REMOVE 102
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -539,74 +543,7 @@ void MainWindow::ProcessX2m()
     }
 
     // Cus tab
-    if (x2m->NumSkillCharaDepends() >= 1)
-    {
-        QString text;
-
-        if (x2m->SkillCharaDependHasAttachment(0))
-        {
-            text = "X2M [EMBEDDED]";
-        }
-        else
-        {
-            text = "X2M [LINKED]";
-        }
-
-        ui->cusCharaAttachButton->setText("Remove x2m");
-        ui->cusModelEdit->setText(text);
-        ui->cusModelEdit->setEnabled(false);
-    }
-    else
-    {
-        ui->cusCharaAttachButton->setText("Set x2m");
-        ui->cusModelEdit->setEnabled(true);
-    }
-
-    if (x2m->NumSkillCharaDepends() >= 2)
-    {
-        QString text;
-
-        if (x2m->SkillCharaDependHasAttachment(1))
-        {
-            text = "X2M [EMBEDDED]";
-        }
-        else
-        {
-            text = "X2M [LINKED]";
-        }
-
-        ui->cusCharaAttach2Button->setText("Remove x2m");
-        ui->cusModel2Edit->setText(text);
-        ui->cusModel2Edit->setEnabled(false);
-    }
-    else
-    {
-        ui->cusCharaAttach2Button->setText("Set x2m");
-        ui->cusModel2Edit->setEnabled(true);
-    }
-
-    if (x2m->NumSkillCharaDepends() >= 3)
-    {
-        QString text;
-
-        if (x2m->SkillCharaDependHasAttachment(2))
-        {
-            text = "X2M [EMBEDDED]";
-        }
-        else
-        {
-            text = "X2M [LINKED]";
-        }
-
-        ui->cusCharaAttach3Button->setText("Remove x2m");
-        ui->cusModel3Edit->setText(text);
-        ui->cusModel3Edit->setEnabled(false);
-    }
-    else
-    {
-        ui->cusCharaAttach3Button->setText("Set x2m");
-        ui->cusModel3Edit->setEnabled(true);
-    }
+    UpdateModels(false);
 
     if (x2m->HasValidSkillEntry())
     {
@@ -1943,11 +1880,14 @@ void MainWindow::SkillToGui(const CusSkill &skill)
     ui->cusBacEdit->setText(Utils::StdStringToQString(skill.paths[5], false));
     ui->cusBcmEdit->setText(Utils::StdStringToQString(skill.paths[6], false));
 
-    if (!x2m->HasSkillCharaDepend())
+    if (x2m->NumSkillCharaDepends() < 1)
         ui->cusModelEdit->setText(QString("%1").arg((int16_t)skill.model));
 
-    ui->cusModel2Edit->setText(QString("%1").arg((int16_t)skill.model2));
-    ui->cusModel3Edit->setText(QString("%1").arg((int16_t)skill.model3));
+    if (x2m->NumSkillCharaDepends() < 2)
+        ui->cusModel2Edit->setText(QString("%1").arg((int16_t)skill.model2));
+
+    if (x2m->NumSkillCharaDepends() < 3)
+        ui->cusModel3Edit->setText(QString("%1").arg((int16_t)skill.model3));
 }
 
 void MainWindow::GuiToSkill(CusSkill &skill)
@@ -2014,13 +1954,20 @@ void MainWindow::GuiToSkill(CusSkill &skill)
 
     skill.id = skill.id2 = X2M_DUMMY_ID16;
 
-    if (x2m->HasSkillCharaDepend())
+    if (x2m->NumSkillCharaDepends() >= 1)
         skill.model = X2M_CHARA_DEPENDS_ID;
     else
-        skill.model = (uint16_t) ui->cusModelEdit->text().toInt();
+        skill.model = (uint16_t) ui->cusModelEdit->text().toInt();    
 
-    skill.model2 = (uint16_t) ui->cusModel2Edit->text().toInt();
-    skill.model3 = (uint16_t) ui->cusModel3Edit->text().toInt();
+    if (x2m->NumSkillCharaDepends() >= 2)
+        skill.model2 = X2M_CHARA_DEPENDS_ID;
+    else
+        skill.model2 = (uint16_t) ui->cusModel2Edit->text().toInt();
+
+    if (x2m->NumSkillCharaDepends() >= 3)
+        skill.model3 = X2M_CHARA_DEPENDS_ID;
+    else
+        skill.model3 = (uint16_t) ui->cusModel3Edit->text().toInt();
 }
 
 void MainWindow::on_cusCopyButton_triggered(QAction *arg1)
@@ -3591,6 +3538,96 @@ void MainWindow::ToggleDarkTheme(bool update_config)
     }
 }
 
+void MainWindow::UpdateModels(bool setMinus1)
+{
+    if (x2m->NumSkillCharaDepends() >= 1)
+    {
+        QString text;
+
+        if (x2m->SkillCharaDependHasAttachment(0))
+        {
+            text = "X2M [EMBEDDED]";
+        }
+        else
+        {
+            text = "X2M [LINKED]";
+        }
+
+        ui->cusCharaAttachButton->setText("Remove x2m");
+        ui->cusModelEdit->setText(text);
+        ui->cusModelEdit->setEnabled(false);
+        ui->cusCharaAttachButton->setProperty(MODEL_STATE, MODEL_STATE_REMOVE);
+    }
+    else
+    {
+        ui->cusCharaAttachButton->setText("Set x2m");
+        ui->cusModelEdit->setEnabled(true);
+
+        if (setMinus1)
+            ui->cusModelEdit->setText("-1");
+
+        ui->cusCharaAttachButton->setProperty(MODEL_STATE, MODEL_STATE_SET);
+    }
+
+    if (x2m->NumSkillCharaDepends() >= 2)
+    {
+        QString text;
+
+        if (x2m->SkillCharaDependHasAttachment(1))
+        {
+            text = "X2M [EMBEDDED]";
+        }
+        else
+        {
+            text = "X2M [LINKED]";
+        }
+
+        ui->cusCharaAttach2Button->setText("Remove x2m");
+        ui->cusModel2Edit->setText(text);
+        ui->cusModel2Edit->setEnabled(false);
+        ui->cusCharaAttach2Button->setProperty(MODEL_STATE, MODEL_STATE_REMOVE);
+    }
+    else
+    {
+        ui->cusCharaAttach2Button->setText("Set x2m");
+        ui->cusModel2Edit->setEnabled(true);
+
+        if (setMinus1)
+            ui->cusModel2Edit->setText("-1");
+
+        ui->cusCharaAttach2Button->setProperty(MODEL_STATE, MODEL_STATE_SET);
+    }
+
+    if (x2m->NumSkillCharaDepends() >= 3)
+    {
+        QString text;
+
+        if (x2m->SkillCharaDependHasAttachment(2))
+        {
+            text = "X2M [EMBEDDED]";
+        }
+        else
+        {
+            text = "X2M [LINKED]";
+        }
+
+        ui->cusCharaAttach3Button->setText("Remove x2m");
+        ui->cusModel3Edit->setText(text);
+        ui->cusModel3Edit->setEnabled(false);
+        ui->cusCharaAttach3Button->setProperty(MODEL_STATE, MODEL_STATE_REMOVE);
+    }
+    else
+    {
+        ui->cusCharaAttach3Button->setText("Set x2m");
+        ui->cusModel3Edit->setEnabled(true);
+
+        if (setMinus1)
+            ui->cusModel3Edit->setText("-1");
+
+        ui->cusCharaAttach3Button->setProperty(MODEL_STATE, MODEL_STATE_SET);
+    }
+}
+
 void MainWindow::on_bcsAttachmentSetButton_clicked()
 {
     QString file = QFileDialog::getOpenFileName(this, "Select costume x2m", config.lf_depends_cost, "X2M Files (*.x2m)");
@@ -4027,33 +4064,42 @@ void MainWindow::on_cusCharaAttachButton_clicked_common(size_t idx)
     }
 
     size_t num = x2m->NumSkillCharaDepends();
-    bool isActionRemove = (button->text().indexOf("Remove") >= 0); // Not very elegant...
+    bool isActionRemove = (button->property(MODEL_STATE) == MODEL_STATE_REMOVE);
+
+    //DPRINTF("Idx = %d, num = %d. isActionRemove = %d\n", idx, num, isActionRemove);
 
     if (!isActionRemove)
     {
         if (idx == 1 && num == 0)
         {
-            DPRINTF("You must first set the x2m of model 1 before setting x2m of model 2.");
+            //DPRINTF("You must first set the x2m of model 1 before setting x2m of model 2.");
+            // Let's map it to first
+            on_cusCharaAttachButton_clicked_common(0);
             return;
         }
 
         if (idx == 2 && num == 0)
         {
-            DPRINTF("You must first set the x2m of model 1 and model 2 before setting x2m of model 3.");
+            //DPRINTF("You must first set the x2m of model 1 and model 2 before setting x2m of model 3.");
+            // Let's map it to first
+            on_cusCharaAttachButton_clicked_common(0);
             return;
         }
 
         if (idx == 2 && num == 1)
         {
-            DPRINTF("You must first set the x2m of model 2 before setting x2m of model 3.");
+            //DPRINTF("You must first set the x2m of model 2 before setting x2m of model 3.");
+            // Let's map it to second
+            on_cusCharaAttachButton_clicked_common(1);
             return;
         }
 
         if (idx == num)
         {
             x2m->AddSkillCharaDependDummy();
+            num++;
         }
-        else
+        else if (idx > num)
         {
             DPRINTF("%s: Unknown gui error. Idx = %Id, num = %Id\n", FUNCNAME, idx, num);
             return;
@@ -4109,30 +4155,33 @@ void MainWindow::on_cusCharaAttachButton_clicked_common(size_t idx)
         }
 
         button->setText("Remove x2m");
+        button->setProperty(MODEL_STATE, MODEL_STATE_REMOVE);
         edit->setText(text);
         edit->setEnabled(false);
     }
     else
     {
-       if (num == 0) // ?
+        bool update = false;
+
+        if (num == 0) // ?
            return;
 
        if (idx == 0 && num == 2)
        {
-           DPRINTF("You must first remove x2m of model 2 before removing the x2m of model 1.");
-           return;
+           //DPRINTF("You must first remove x2m of model 2 before removing the x2m of model 1.");
+           update = true;
        }
 
        if (idx == 0 && num == 3)
        {
-           DPRINTF("You must first remove x2m of model 3 and model 2 before removing the x2m of model 1.");
-           return;
+           //DPRINTF("You must first remove x2m of model 3 and model 2 before removing the x2m of model 1.");
+           update = true;
        }
 
        if (idx == 1 && num == 3)
        {
-           DPRINTF("You must first remove x2m of model 3 before removing the x2m of model 2.");
-           return;
+           //DPRINTF("You must first remove x2m of model 3 before removing the x2m of model 2.");
+           update = true;
        }
 
        if (x2m->SkillCharaDependHasAttachment(idx))
@@ -4140,9 +4189,17 @@ void MainWindow::on_cusCharaAttachButton_clicked_common(size_t idx)
 
        x2m->RemoveSkillCharaDepend(idx);
 
-       button->setText("Set x2m");
-       edit->setText("-1");
-       edit->setEnabled(true);
+       if (update)
+       {
+           UpdateModels(true);
+       }
+       else
+       {
+           button->setText("Set x2m");
+           button->setProperty(MODEL_STATE, MODEL_STATE_SET);
+           edit->setText("-1");
+           edit->setEnabled(true);
+       }
     }
 }
 
